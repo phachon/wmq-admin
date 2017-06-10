@@ -1,0 +1,82 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel-body" style="padding: 15px 0;">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="log.html">日志列表</a></li>
+                    <!--<li><a href="log_error.html">错误日志</a></li>-->
+                    <!--<li><a href="log_debug.html">调试日志</a></li>-->
+                </ul>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <form>
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <div class="btn-group">
+                                    <a type="button" class="btn btn-default disabled" href="javascript:;">日志条数</a>
+                                    <button type="button" class="btn btn-default active">20</button>
+                                    <button type="button" class="btn btn-default">50</button>
+                                    <button type="button" class="btn btn-default">80</button>
+                                    <button type="button" class="btn btn-default">100</button>
+                                    <a type="button" class="btn btn-default disabled" href="javascript:;">条</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                        </div>
+                        <div class="col-md-3"></div>
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <input class="form-control" type="text" value="" placeholder="搜索" name="keyword">
+                                  <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-search"></i></button>
+                                  </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th class="w13p">时间</th>
+                            <th class="w10p">消息</th>
+                            <th>消费者</th>
+                            <th class="w8p">消费结果</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="center">2017-03-17 08:00:45</td>
+                            <td class="center">video</td>
+                            <td>http://test.com/video/callback</td>
+                            <td class="center"><span class="label label-success">成功</span></td>
+                        </tr>
+                        <tr>
+                            <td class="center">2017-03-17 08:00:45</td>
+                            <td class="center">new</td>
+                            <td>http://test.com/new/callback</td>
+                            <td class="center"><span class="label label-success">成功</span></td>
+                        </tr>
+                        <tr>
+                            <td class="center">2017-03-17 08:00:45</td>
+                            <td class="center">stream</td>
+                            <td>http://test.com/video/callback</td>
+                            <td class="center"><span class="label label-danger">失败</span></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col-md-8 m-pagination" id="paginator">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

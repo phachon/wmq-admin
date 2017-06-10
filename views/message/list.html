@@ -1,0 +1,92 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel-body" style="padding: 15px 0;">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="/message/list">消息列表</a></li>
+                    <li><a href="/message/add">添加消息</a></li>
+                </ul>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <form>
+                        <div class="col-md-2">
+                            <div class="form-group text-left">
+                                <button type="button" class="btn btn-primary"><i class="glyphicon glyphicon-refresh"></i> 重载服务</button>
+                            </div>
+                        </div>
+                        <div class="col-md-7"></div>
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <input class="form-control" type="text" value="" placeholder="消息名称" name="keyword">
+                  <span class="input-group-btn">
+                    <button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-search"></i></button>
+                  </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th class="w8p">id</th>
+                            <th class="w10p">消息名称</th>
+                            <th class="w8p">Exchange</th>
+                            <th class="w20p">Token</th>
+                            <th class="w10p">状态</th>
+                            <th class="w15p">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="center">1</td>
+                            <td>video</td>
+                            <td class="center">topic</td>
+                            <td class="center">dd9c27f69fe86fe5d41ec1a93e716bcf</td>
+                            <td class="center"><span class="label label-success">运行中</span></td>
+                            <td class="center">
+                                <a data-link="message_consumer.html" name="consumer_list"><i class="glyphicon glyphicon-list-alt"></i> 消费者</a>
+                                <a data-link="message_edit.html" name="edit"><i class="glyphicon glyphicon-pencil"></i> 修改</a>
+                                <a onclick="Common.confirm('确定要删除吗？')"><i class="glyphicon glyphicon-remove"></i> 删除</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="center">2</td>
+                            <td>New</td>
+                            <td class="center">fanout</td>
+                            <td class="center">dd9c27f69fe86fe5d41ec1a93e716bcf</td>
+                            <td class="center"><span class="label label-success">运行中</span></td>
+                            <td class="center">
+                                <a data-link="message_consumer.html" name="consumer_list"><i class="glyphicon glyphicon-list-alt"></i> 消费者</a>
+                                <a data-link="message_edit.html" name="edit"><i class="glyphicon glyphicon-pencil"></i> 修改</a>
+                                <a onclick="Common.confirm('确定要删除吗？')"><i class="glyphicon glyphicon-remove"></i> 删除</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="center">3</td>
+                            <td>stream</td>
+                            <td class="center">direct</td>
+                            <td class="center">dd9c27f69fe86fe5d41ec1a93e716bcf</td>
+                            <td class="center"><span class="label label-danger">已停止</span></td>
+                            <td class="center">
+                                <a data-link="message_consumer.html" name="consumer_list"><i class="glyphicon glyphicon-list-alt"></i> 消费者</a>
+                                <a data-link="message_edit.html" name="edit"><i class="glyphicon glyphicon-pencil"></i> 修改</a>
+                                <a onclick="Common.confirm('确定要删除吗？')"><i class="glyphicon glyphicon-remove"></i> 删除</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col-md-8 m-pagination" id="paginator">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
