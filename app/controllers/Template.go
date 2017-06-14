@@ -34,3 +34,8 @@ func (this *TemplateController) display(tpl ...string) {
 func (this *TemplateController) redirect(tpl ...string) {
 
 }
+
+//是否是 post 请求
+func (this *TemplateController) isPost() bool {
+	return this.Ctx.Request.Method == "POST";
+}

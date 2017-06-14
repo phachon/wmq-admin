@@ -1,7 +1,7 @@
 package routers
 
 import (
-	"wmq-admin/controllers"
+	"wmq-admin/app/controllers"
 	"github.com/astaxie/beego"
 )
 
