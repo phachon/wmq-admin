@@ -1,0 +1,72 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel-body" style="padding: 15px 0;">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="/node/list">节点列表</a></li>
+                    <li><a href="/node/add">添加节点</a></li>
+                </ul>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <form>
+                        <div class="col-md-3 col-lg-offset-9">
+                            <div class="input-group">
+                                <input class="form-control" type="text" value="" placeholder="用户名/account_id" name="keyword">
+                                  <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-search"></i></button>
+                                  </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th class="w8p">id</th>
+                            <th class="w18p">ip</th>
+                            <th class="w18p">端口</th>
+                            <th class="w13p">token</th>
+                            <th class="w13p">备注</th>
+                            <th class="w15p">创建时间</th>
+                            <th class="w15p">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {{range $node := .nodes}}
+                        <tr>
+                            <td class="center">{{$node.Id}}</td>
+                            <td>{{$node.Ip}}</td>
+                            <td>{{$node.Port}}</td>
+                            <td class="center">{{$node.Token}}</td>
+                            <td class="center">{{$node.Comment}}</td>
+                            <td class="center">{{$node.CreateTime}}</td>
+                            <td class="center">
+                                <a name="edit" data-link=""><i class="glyphicon glyphicon-pencil"> </i>修改</a>
+                                <a name="remove" onclick="Common.confirm('确认要屏蔽吗?')"><i class="glyphicon glyphicon-remove"></i>屏蔽</a>
+                                <a name="review" onclick="Common.confirm('确定要恢复吗')" data-link="#" ><i class="glyphicon glyphicon-ok"> </i>恢复</a>
+                            </td>
+                        </tr>
+                        {{end}}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col-md-8 m-pagination" id="paginator">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var pageData = [];
+    pageData.push();
+    Common.paginator("#paginator", pageData);
+    Account.bindFancyBox();
+</script>

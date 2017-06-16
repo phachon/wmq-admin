@@ -4,7 +4,7 @@
 -- -------------------------------------------
 
 -- -------------------------------------------
--- wmq user table
+-- wmq user table 用户表
 -- -------------------------------------------
 DROP TABLE IF EXISTS `wmq_user`;
 CREATE TABLE `wmq_user` (
@@ -22,3 +22,19 @@ CREATE TABLE `wmq_user` (
 
 INSERT INTO `wmq_user` (`name`, `email`, `password`,  `mobile`, `status`, `create_time`, `update_time`)
 VALUES ('root', 'root@123456.com', 'e10adc3949ba59abbe56e057f20f883e', '1102222', '0', '1460557068', '1461407549');
+
+-- -------------------------------------------
+-- wmq node table 节点表
+-- -------------------------------------------
+DROP TABLE IF EXISTS `wmq_node`;
+CREATE TABLE `wmq_node` (
+  `node_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `ip` varchar(20) NOT NULL DEFAULT '' COMMENT '节点ip',
+  `port` int(8) NOT NULL DEFAULT '0' COMMENT '端口',
+  `token` VARCHAR(32) NOT NULL DEFAULT '' COMMENT 'token',
+  `comment` VARCHAR(200) NOT NULL DEFAULT '' COMMENT '备注',
+  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态 0 正常 -1 删除',
+  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
+  PRIMARY KEY (`node_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

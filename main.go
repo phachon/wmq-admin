@@ -23,7 +23,14 @@ func main() {
 		beego.LoadAppConfig("ini", "conf/production.conf")
 	}
 
+	if beego.AppConfig.String("runmode") == "development" {
+		beego.SetLevel(beego.LevelDebug)
+	} else {
+		beego.SetLevel(beego.LevelInformational)
+		beego.SetLogger("file", `{"filename":"`+beego.AppConfig.String("log.log_file")+`"}`)
+		beego.BeeLogger.DelLogger("console")
+	}
+
 	models.Init();
 	beego.Run();
 }
-

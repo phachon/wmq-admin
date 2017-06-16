@@ -30,6 +30,29 @@ func (this *TemplateController) display(tpl ...string) {
 	this.TplName = tpl[0];
 }
 
+//成功输出json
+func (this *TemplateController) jsonSuccess(message string, redirect string, data interface{}) {
+	this.jsonResult(1, message, redirect, data);
+}
+
+//错误输出json
+func (this *TemplateController) jsonError(message string, redirect string, data interface{}) {
+	this.jsonResult(0, message, redirect, data);
+}
+
+//输出json
+func (this *TemplateController) jsonResult(code int, message string, redirect string, data interface{}) {
+	body := make(map[string]interface{});
+	body["code"] = code;
+	body["message"] = message;
+	body["redirect"] = redirect;
+	body["data"] = data;
+
+	this.Data["json"] = body;
+	this.ServeJSON();
+	this.StopRun();
+}
+
 //302跳转
 func (this *TemplateController) redirect(tpl ...string) {
 

@@ -31,7 +31,7 @@ func Init()  {
 	//时区设置
 	//orm.DefaultTimeLoc = timezone
 
-	orm.RegisterModel(new(User))
+	orm.RegisterModel(new(User), new(Node))
 
 	if beego.AppConfig.String("runmode") == "development" {
 		orm.Debug = true
