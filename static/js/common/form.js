@@ -37,7 +37,7 @@ var Form = {
 		function successNotify(messages, data) {
 			// var text = messages.join("\n");
 			var title = '<strong>操作成功：</strong>';
-			var text = '<ul>'+messages+'</ul>';
+			var text = messages;
 			var timer = 2000;
 			submitButton.notify(title + text, {
 				position: "right",

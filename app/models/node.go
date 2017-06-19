@@ -7,8 +7,8 @@ import (
 )
 
 const (
-	STATUS_NORMAL = 0;
-	STATUS_DELETE = -1;
+	NODE_IS_DELETE_FALSE = 0;
+	NODE_IS_DELETE_TRUE = 1;
 )
 
 type Node struct {
@@ -18,7 +18,7 @@ type Node struct {
 	MessagePort int
 	Token string
 	Comment string
-	Status int8
+	IsDelete int8
 	CreateTime int64
 	UpdateTime int64
 }
@@ -32,22 +32,22 @@ func (node *Node) TableName() string {
 func InsertNode(node *Node) (int64, error){
 
 	if(node.Ip == "") {
-		return 0, fmt.Errorf("ip 不能为空!");
+		return 0, fmt.Errorf("%s", "ip 不能为空!");
 	}
 	if(node.ManagerPort == 0) {
-		return 0, fmt.Errorf("管理端口不能为空!");
+		return 0, fmt.Errorf("%s", "管理端口不能为空!");
 	}
 	if(node.MessagePort == 0) {
-		return 0, fmt.Errorf("消息端口不能为空!");
+		return 0, fmt.Errorf("%s", "消息端口不能为空!");
 	}
 	if(node.Token == "") {
-		return 0, fmt.Errorf("token 不能为空!");
+		return 0, fmt.Errorf("%s", "token 不能为空!");
 	}
 	if(node.Comment == "") {
-		return 0, fmt.Errorf("必须填写备注!");
+		return 0, fmt.Errorf("%s", "必须填写备注!");
 	}
 
-	node.Status = 0
+	node.IsDelete = NODE_IS_DELETE_FALSE;
 	node.CreateTime = time.Now().Unix();
 	node.UpdateTime = time.Now().Unix();
 

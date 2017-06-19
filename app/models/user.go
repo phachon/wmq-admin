@@ -1,16 +1,26 @@
 package models
 
-import "github.com/astaxie/beego/orm"
+import (
+	"github.com/astaxie/beego/orm"
+	"fmt"
+	"time"
+	"wmq-admin/app/common"
+)
+
+const (
+	USER_IS_DELETE_TRUE = 1
+	USER_IS_DELETE_FALSE = 0
+);
 
 type User struct {
-	Id int `orm:"auto;pk;column(user_id);"`
+	Id int64 `orm:"auto;pk;column(user_id);"`
 	Name string
 	Email string
 	Password string
 	Mobile string
-	Status int
-	CreateTime int
-	UpdateTime int
+	IsDelete int
+	CreateTime int64
+	UpdateTime int64
 }
 
 //table name
@@ -24,4 +34,26 @@ func GetUsers() ([]*User) {
 	query := orm.NewOrm().QueryTable(TableName("user"))
 	query.All(&users);
 	return users;
+}
+
+//插入一条用户信息
+func InsertUser(user *User) (int64, error){
+
+	if(user.Name == "") {
+		return 0, fmt.Errorf("用户名不能为空!");
+	}
+	if(user.Email == "") {
+		return 0, fmt.Errorf("邮箱不能为空!");
+	}
+	if(user.Password == "") {
+		return 0, fmt.Errorf("密码不能为空!");
+	}
+
+	user.Password = common.Md5Encode(user.Password);
+
+	user.IsDelete = USER_IS_DELETE_FALSE;
+	user.CreateTime = time.Now().Unix();
+	user.UpdateTime = time.Now().Unix();
+
+	return orm.NewOrm().Insert(user);
 }
