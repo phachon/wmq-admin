@@ -3,21 +3,37 @@ package models
 import (
 	"github.com/astaxie/beego"
 	_ "github.com/go-sql-driver/mysql"
+	_ "github.com/mattn/go-sqlite3"
 	"github.com/astaxie/beego/orm"
 )
 
 //初始化
-func Init()  {
-	host := beego.AppConfig.String("database.host");
-	port := beego.AppConfig.String("database.port");
-	user := beego.AppConfig.String("database.user");
-	password := beego.AppConfig.String("database.password");
-	database := beego.AppConfig.String("database.name");
-	charset := beego.AppConfig.String("database.charset");
-	maxIdle := beego.AppConfig.DefaultInt("database.maxIdle", 30);
-	maxOpenConn := beego.AppConfig.DefaultInt("database.maxOpenConn", 30);
-	//timezone := beego.AppConfig.String("database.timezone");
+func Init() {
+	databaseType := beego.AppConfig.String("database.type");
+	if(databaseType == "mysql") {
+		mysqlConn();
+	}
+	if(databaseType == "sqlite") {
+		sqliteConn();
+	}
 
+	orm.RegisterModel(new(User), new(Node))
+
+	if beego.AppConfig.String("runmode") == "development" {
+		orm.Debug = true
+	}
+}
+
+//mysql 连接
+func mysqlConn()  {
+	host := beego.AppConfig.String("database.mysql.host");
+	port := beego.AppConfig.String("database.mysql.port");
+	user := beego.AppConfig.String("database.mysql.user");
+	password := beego.AppConfig.String("database.mysql.password");
+	database := beego.AppConfig.String("database.mysql.name");
+	charset := beego.AppConfig.String("database.mysql.charset");
+	maxIdle := beego.AppConfig.DefaultInt("database.mysql.maxIdle", 30);
+	maxOpenConn := beego.AppConfig.DefaultInt("database.mysql.maxOpenConn", 30);
 	dsn := user + ":" + password + "@tcp(" + host + ":" + port + ")/" + database + "?charset=" + charset;
 
 	//驱动
@@ -28,14 +44,13 @@ func Init()  {
 	orm.SetMaxIdleConns("default", maxIdle);
 	//数据库最大连接
 	orm.SetMaxOpenConns("default", maxOpenConn);
-	//时区设置
-	//orm.DefaultTimeLoc = timezone
+}
 
-	orm.RegisterModel(new(User), new(Node))
-
-	if beego.AppConfig.String("runmode") == "development" {
-		orm.Debug = true
-	}
+//sqlite 连接
+func sqliteConn()  {
+	sqlite := beego.AppConfig.String("database.sqlite.path");
+	orm.RegisterDriver("sqlite", orm.DRSqlite)
+	orm.RegisterDataBase("default", "sqlite3", sqlite)
 }
 
 func TableName(name string) string {

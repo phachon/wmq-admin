@@ -1,5 +1,6 @@
 -- -------------------------------------------
--- wmq-admin database wmq_admin
+-- type: mysql
+-- database: wmq-admin
 -- author: phachon@163.com
 -- -------------------------------------------
 

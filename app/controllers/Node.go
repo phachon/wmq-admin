@@ -27,7 +27,8 @@ func (this *NodeController) Save() {
 	Node := new(models.Node);
 
 	Node.Ip = strings.TrimSpace(this.GetString("ip"));
-	Node.Port, _ = this.GetInt("port");
+	Node.ManagerPort, _ = this.GetInt("manager_port");
+	Node.MessagePort, _ = this.GetInt("message_port");
 	Node.Token = strings.TrimSpace(this.GetString("token"));
 	Node.Comment = strings.TrimSpace(this.GetString("comment"));
 

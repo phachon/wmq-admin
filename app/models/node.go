@@ -12,9 +12,10 @@ const (
 )
 
 type Node struct {
-	Id int64 `orm:"pk;column(node_id);"`
+	Id int64 `orm:"auto;pk;column(node_id);"`
 	Ip string
-	Port int
+	ManagerPort int
+	MessagePort int
 	Token string
 	Comment string
 	Status int8
@@ -33,8 +34,11 @@ func InsertNode(node *Node) (int64, error){
 	if(node.Ip == "") {
 		return 0, fmt.Errorf("ip 不能为空!");
 	}
-	if(node.Port == 0) {
-		return 0, fmt.Errorf("port 不能为空!");
+	if(node.ManagerPort == 0) {
+		return 0, fmt.Errorf("管理端口不能为空!");
+	}
+	if(node.MessagePort == 0) {
+		return 0, fmt.Errorf("消息端口不能为空!");
 	}
 	if(node.Token == "") {
 		return 0, fmt.Errorf("token 不能为空!");

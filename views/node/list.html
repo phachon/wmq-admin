@@ -28,7 +28,8 @@
                         <tr>
                             <th class="w8p">id</th>
                             <th class="w18p">ip</th>
-                            <th class="w18p">端口</th>
+                            <th class="w18p">管理端口</th>
+                            <th class="w18p">消息端口</th>
                             <th class="w13p">token</th>
                             <th class="w13p">备注</th>
                             <th class="w15p">创建时间</th>
@@ -40,7 +41,8 @@
                         <tr>
                             <td class="center">{{$node.Id}}</td>
                             <td>{{$node.Ip}}</td>
-                            <td>{{$node.Port}}</td>
+                            <td>{{$node.ManagerPort}}</td>
+                            <td>{{$node.MessagePort}}</td>
                             <td class="center">{{$node.Token}}</td>
                             <td class="center">{{$node.Comment}}</td>
                             <td class="center">{{$node.CreateTime}}</td>
