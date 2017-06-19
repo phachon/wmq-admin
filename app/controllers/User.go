@@ -13,17 +13,16 @@ type UserController struct {
 func (this *UserController) List() {
 	users := models.GetUsers();
 	this.Data["users"] = users;
-	this.display("user/list.html");
+	this.display("user/list");
 }
 
 //添加用户
 func (this *UserController) Add()  {
-	this.display("user/form.html");
+	this.display("user/form");
 }
 
 //保存用户
 func (this *UserController) Save() {
-	data := make(map[string]string);
 	user := new(models.User);
 
 	user.Name = strings.TrimSpace(this.GetString("name"));
@@ -32,8 +31,8 @@ func (this *UserController) Save() {
 
 	userId, err := models.InsertUser(user);
 	if(userId == 0 || err != nil) {
-		this.jsonError(err.Error(), "", data);
+		this.jsonError(err.Error(), "");
 	}
 
-	this.jsonSuccess("添加用户成功", "/user/list", data);
+	this.jsonSuccess("添加用户成功", "/user/list");
 }

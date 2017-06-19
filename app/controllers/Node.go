@@ -14,17 +14,16 @@ func (this *NodeController) List() {
 
 	nodes := models.GetNodes();
 	this.Data["nodes"] = nodes;
-	this.display("node/list.html");
+	this.display("node/list");
 }
 
 //添加节点
 func (this *NodeController) Add()  {
-	this.display("node/form.html");
+	this.display("node/form");
 }
 
 //保存节点
 func (this *NodeController) Save() {
-	data := make(map[string]string);
 	Node := new(models.Node);
 
 	Node.Ip = strings.TrimSpace(this.GetString("ip"));
@@ -35,8 +34,8 @@ func (this *NodeController) Save() {
 
 	nodeId, err := models.InsertNode(Node);
 	if(nodeId == 0 || err != nil) {
-		this.jsonError(err.Error(), "", data);
+		this.jsonError(err.Error(), "");
 	}
 
-	this.jsonSuccess("添加节点成功", "/node/list", data);
+	this.jsonSuccess("添加节点成功", "/node/list");
 }

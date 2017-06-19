@@ -57,3 +57,11 @@ func InsertUser(user *User) (int64, error){
 
 	return orm.NewOrm().Insert(user);
 }
+
+//根据 name 查找 user
+func GetUserByName(name string) ([]*User)  {
+	users := make([]*User, 0)
+	query := orm.NewOrm().QueryTable(TableName("user")).Filter("name", name);
+	query.All(&users);
+	return users;
+}

@@ -6,6 +6,6 @@ type IndexController struct {
 
 //首页
 func (this *IndexController) Index()  {
-	this.display("index/main.html");
+	this.display("index/main");
 }
 

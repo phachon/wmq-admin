@@ -6,10 +6,10 @@ type ConsumerController struct {
 
 //消费列表
 func (this *ConsumerController) List()  {
-	this.display("consumer/list.html");
+	this.display("consumer/list");
 }
 
 //添加消费者
 func (this *ConsumerController) Add()  {
-	this.display("consumer/form.html");
+	this.display("consumer/form");
 }
