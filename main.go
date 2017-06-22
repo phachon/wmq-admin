@@ -31,6 +31,9 @@ func main() {
 		beego.BeeLogger.DelLogger("console")
 	}
 
+	//开启 session
+	beego.BConfig.WebConfig.Session.SessionOn = true
+
 	models.Init();
 	beego.Run();
 }

@@ -5,7 +5,7 @@ type IndexController struct {
 }
 
 //首页
-func (this *IndexController) Index()  {
+func (this *IndexController) Main()  {
 	this.display("index/main");
 }
 

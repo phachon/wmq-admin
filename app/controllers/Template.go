@@ -3,6 +3,7 @@ package controllers
 import (
 	"github.com/astaxie/beego"
 	"strings"
+	"wmq-admin/app/common"
 )
 
 var viewPostfix = ".html";
@@ -29,6 +30,11 @@ func (this *TemplateController) Prepare() {
 	this.controllerName = strings.ToLower(controllerName[0 : len(controllerName)-10])
 	this.methodName = actionName
 
+	isLogin := this.isLogin()
+	if(!isLogin) {
+		this.redirect("/author/index")
+	}
+	//判断是否登录
 	//默认layout
 	this.layoutHtml = "layout/default"
 	//默认tpl
@@ -38,6 +44,47 @@ func (this *TemplateController) Prepare() {
 	this.jsonValue.message = "";
 	this.jsonValue.redirect = "";
 	this.jsonValue.data = make(map[string]interface{});
+}
+
+//验证登录
+func (this *TemplateController) isLogin() bool {
+	//忽略 /author /error
+	if(this.controllerName == "author" || this.controllerName == "error") {
+		return true;
+	}
+	passport := beego.AppConfig.String("author.passport")
+	cookie := this.Ctx.GetCookie(passport)
+	//cookie 失效
+	if(cookie == "") {
+		return false
+	}
+	user := this.GetSession("author")
+	//session 失效
+	if(user == nil) {
+		return false
+	}
+	encrypt := new(common.Encrypt)
+	cookieValue, _ := encrypt.Base64Decode(cookie)
+	if(cookieValue == "") {
+		return false
+	}
+
+	identifyList := strings.Split(cookieValue, "@")
+	name := identifyList[0]
+	identify := identifyList[1]
+	userValue := user.(map[string]interface{})
+
+	//对比cookie 和 session name
+	if(name != userValue["name"].(string)) {
+		return false
+	}
+	//对比客户端UAG and IP
+	if(identify != encrypt.Md5Encode(this.Ctx.Request.UserAgent() + this.getClientIp() + userValue["password"].(string))) {
+		return false
+	}
+
+	//success
+	return true;
 }
 
 //执行后
@@ -59,6 +106,7 @@ func (this *TemplateController) display(tpl string) {
 func (this *TemplateController) jsonSuccess(message string, redirect string) {
 	this.jsonValue.code = 1;
 	this.jsonValue.message = message;
+	this.jsonValue.redirect = redirect;
 	this.jsonResult();
 }
 
@@ -66,6 +114,7 @@ func (this *TemplateController) jsonSuccess(message string, redirect string) {
 func (this *TemplateController) jsonError(message string, redirect string) {
 	this.jsonValue.code = 0;
 	this.jsonValue.message = message;
+	this.jsonValue.redirect = redirect;
 	this.jsonResult();
 }
 
@@ -83,11 +132,18 @@ func (this *TemplateController) jsonResult() {
 }
 
 //302跳转
-func (this *TemplateController) redirect(tpl ...string) {
-
+func (this *TemplateController) redirect(url string) {
+	this.Redirect(url, 302)
+	this.StopRun()
 }
 
 //是否是 post 请求
 func (this *TemplateController) isPost() bool {
 	return this.Ctx.Request.Method == "POST";
+}
+
+//获取用户IP地址
+func (this *TemplateController) getClientIp() string {
+	s := strings.Split(this.Ctx.Request.RemoteAddr, ":")
+	return s[0]
 }
