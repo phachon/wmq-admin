@@ -10,18 +10,20 @@
             <div class="panel-body">
                 <div class="row">
                     <form>
-                        <div class="col-md-2">
-                            <div class="form-group text-left">
-                                <button type="button" class="btn btn-primary"><i class="glyphicon glyphicon-refresh"></i> 重载服务</button>
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <span class="input-group-addon">选择节点</span>
+                                <select class="form-control" name="message_id">
+                                    <option value="1">127.0.0.1</option>
+                                    <option value="2">127.0.0.2</option>
+                                    <option value="3">127.0.0.13</option>
+                                </select>
                             </div>
                         </div>
                         <div class="col-md-7"></div>
-                        <div class="col-md-3">
-                            <div class="input-group">
-                                <input class="form-control" type="text" value="" placeholder="消息名称" name="keyword">
-                  <span class="input-group-btn">
-                    <button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-search"></i></button>
-                  </span>
+                        <div class="col-md-2">
+                            <div class="form-group text-left">
+                                <button type="button" class="btn btn-primary"><i class="glyphicon glyphicon-refresh"></i> 重载服务</button>
                             </div>
                         </div>
                     </form>

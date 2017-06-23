@@ -51,7 +51,7 @@ func (this *TemplateController) Login()  {
 	identify := encrypt.Md5Encode(this.Ctx.Request.UserAgent() + this.getClientIp() + password)
 	passportValue := encrypt.Base64Encode(name + "@" + identify)
 	passport := beego.AppConfig.String("author.passport")
-	this.Ctx.SetCookie(passport, passportValue)
+	this.Ctx.SetCookie(passport, passportValue, 3600)
 
 	this.jsonSuccess("登录成功", "/index/main");
 }

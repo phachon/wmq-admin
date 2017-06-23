@@ -33,6 +33,8 @@ func main() {
 
 	//开启 session
 	beego.BConfig.WebConfig.Session.SessionOn = true
+	//session 过期时间
+	beego.BConfig.WebConfig.Session.SessionGCMaxLifetime = 3600
 
 	models.Init();
 	beego.Run();
