@@ -3,6 +3,7 @@ package controllers
 import (
 	"wmq-admin/app/models"
 	"strings"
+	"time"
 );
 
 type UserController struct {
@@ -64,8 +65,9 @@ func (this *UserController) Modify() {
 	user.Name = strings.TrimSpace(this.GetString("name"));
 	user.Email = strings.TrimSpace(this.GetString("email"));
 	user.Mobile = strings.TrimSpace(this.GetString("mobile"));
+	user.UpdateTime = time.Now().Unix();
 
-	userId, err := models.UpdateUser(user, "email", "mobile");
+	userId, err := models.UpdateUser(user, "email", "mobile", "update_time");
 	if(userId == 0 || err != nil) {
 		this.jsonError(err.Error(), "");
 	}
