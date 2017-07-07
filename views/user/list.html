@@ -12,7 +12,7 @@
                     <form>
                         <div class="col-md-3 col-lg-offset-9">
                             <div class="input-group">
-                                <input class="form-control" type="text" value="" placeholder="用户名/account_id" name="keyword">
+                                <input class="form-control" type="text" value="" placeholder="用户名/user_id" name="keyword">
                                   <span class="input-group-btn">
                                     <button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-search"></i></button>
                                   </span>
@@ -43,7 +43,7 @@
                             <td class="center">{{$user.Mobile}}</td>
                             <td class="center">{{$user.CreateTime}}</td>
                             <td class="center">
-                                <a name="edit" data-link=""><i class="glyphicon glyphicon-pencil"> </i>修改</a>
+                                <a name="edit" data-link="/user/edit?user_id={{$user.Id}}"><i class="glyphicon glyphicon-pencil"> </i>修改</a>
                                 <a name="remove" onclick="Common.confirm('确认要屏蔽吗?')"><i class="glyphicon glyphicon-remove"></i>屏蔽</a>
                                 <a name="review" onclick="Common.confirm('确定要恢复吗')" data-link="#" ><i class="glyphicon glyphicon-ok"> </i>恢复</a>
                             </td>
@@ -62,9 +62,10 @@
         </div>
     </div>
 </div>
+<script src="/static/js/modules/user.js"></script>
 <script type="text/javascript">
-    var pageData = [];
-    pageData.push();
-    Common.paginator("#paginator", pageData);
-    Account.bindFancyBox();
+//    var pageData = [];
+//    pageData.push();
+//    Common.paginator("#paginator", pageData);
+    User.bindFancyBox();
 </script>

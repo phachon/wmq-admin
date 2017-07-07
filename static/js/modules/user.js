@@ -1,15 +1,15 @@
 /**
- * account 用户
+ * user 用户
  */
-var Account = {
+var User = {
 
     bindFancyBox: function() {
 
         $('[name="edit"]').each(function () {
             $(this).fancybox({
-                minWidth: 700,
-                minHeight: 375,
-                width: '70%',
+                minWidth: 500,
+                minHeight: 200,
+                width: '65%',
                 height: '50%',
                 autoSize: false,
                 type: 'iframe',

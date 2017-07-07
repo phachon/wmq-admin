@@ -36,3 +36,39 @@ func (this *UserController) Save() {
 
 	this.jsonSuccess("添加用户成功", "/user/list");
 }
+
+//修改用户
+func (this *UserController) Edit() {
+
+	userId, _ := this.GetInt("user_id");
+
+	if(userId == 0) {
+		this.redirect("user/list");
+	}
+
+	users := models.GetUserByUserId(userId);
+	if(len(users) == 0) {
+		this.redirect("user/list");
+	}
+	this.layoutHtml = "layout/template";
+
+	this.Data["user"] = users[0];
+	this.display("user/edit");
+}
+
+//修改保存用户
+func (this *UserController) Modify() {
+	user := new(models.User);
+
+	user.Id, _ = this.GetInt64("user_id");
+	user.Name = strings.TrimSpace(this.GetString("name"));
+	user.Email = strings.TrimSpace(this.GetString("email"));
+	user.Mobile = strings.TrimSpace(this.GetString("mobile"));
+
+	userId, err := models.UpdateUser(user, "email", "mobile");
+	if(userId == 0 || err != nil) {
+		this.jsonError(err.Error(), "");
+	}
+
+	this.jsonSuccess("修改用户成功", "/user/list");
+}

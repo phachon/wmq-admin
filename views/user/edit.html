@@ -1,0 +1,35 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel-body">
+                <form class="form-horizontal" action="/user/modify" method="post" onsubmit="return false">
+                    <input type="hidden" name="user_id" value="{{.user.Id}}">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label"><span class="text-danger"> * </span>用户名</label>
+                        <div class="col-sm-4">
+                            <input type="text" name="name" class="form-control" placeholder="用户名" value="{{.user.Name}}" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label"><span class="text-danger"> * </span>邮箱</label>
+                        <div class="col-sm-4">
+                            <input type="email" name="email" class="form-control" placeholder="邮箱" value="{{.user.Email}}" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">手机</label>
+                        <div class="col-sm-4">
+                            <input type="text" name="mobile" class="form-control" placeholder="手机" value="{{.user.Mobile}}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button type="button" name="submit" onclick="Form.ajaxSubmit(this.form, true)" class="btn btn-success">保存</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <hr>
+        </div>
+    </div>
+</div>

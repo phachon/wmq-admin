@@ -65,3 +65,16 @@ func GetUserByName(name string) ([]*User)  {
 	query.All(&users);
 	return users;
 }
+
+//根据 user_id 查找 user
+func GetUserByUserId(userId int) ([]*User)  {
+	users := make([]*User, 0)
+	query := orm.NewOrm().QueryTable(TableName("user")).Filter("user_id", userId);
+	query.All(&users);
+	return users;
+}
+
+//来修改用户
+func UpdateUser(user *User, fields ...string) (int64, error) {
+	return orm.NewOrm().Update(user, fields...);
+}
