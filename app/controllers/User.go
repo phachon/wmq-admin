@@ -74,3 +74,33 @@ func (this *UserController) Modify() {
 
 	this.jsonSuccess("修改用户成功", "/user/list");
 }
+
+//屏蔽用户
+func (this *UserController) Remove()  {
+	user := new(models.User);
+
+	user.Id, _ = this.GetInt64("user_id");
+	user.IsDelete = models.USER_IS_DELETE_TRUE;
+
+	userId, err := models.UpdateUser(user, "is_delete");
+	if(userId == 0 || err != nil) {
+		this.jsonError(err.Error(), "");
+	}
+
+	this.jsonSuccess("屏蔽用户成功", "/user/list");
+}
+
+//恢复用户
+func (this *UserController) Review()  {
+	user := new(models.User);
+
+	user.Id, _ = this.GetInt64("user_id");
+	user.IsDelete = models.NODE_IS_DELETE_FALSE;
+
+	userId, err := models.UpdateUser(user, "is_delete");
+	if(userId == 0 || err != nil) {
+		this.jsonError(err.Error(), "");
+	}
+
+	this.jsonSuccess("恢复用户成功", "/user/list");
+}
