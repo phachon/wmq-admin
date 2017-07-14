@@ -5,6 +5,7 @@ import (
 	"github.com/astaxie/beego"
 	"os"
 	"wmq-admin/app/models"
+	"wmq-admin/app/common"
 )
 
 func main() {
@@ -36,6 +37,11 @@ func main() {
 	//session 过期时间
 	beego.BConfig.WebConfig.Session.SessionGCMaxLifetime = 3600
 
+	//加载自定义模板函数
+	new(common.Views).TemplateFunc();
+	//models 初始化
 	models.Init();
+
+	//beego run
 	beego.Run();
 }

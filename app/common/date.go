@@ -1,10 +1,13 @@
 package common
 
-import "time"
+import (
+	"github.com/astaxie/beego"
+	"time"
+)
 
 type Date struct{}
 
 //格式化 unix 时间戳
-func (date *Date) format(unixTime int64, format string) string {
-	return time.Unix(unixTime, 0).Format(format);
+func (date *Date) Format(unixTime int64, format string) string {
+	return beego.Date(time.Unix(unixTime, 0), format);
 }

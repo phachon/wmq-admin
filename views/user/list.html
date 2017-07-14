@@ -31,6 +31,7 @@
                             <th class="w18p">邮箱</th>
                             <th class="w13p">手机</th>
                             <th class="w15p">创建时间</th>
+                            <th class="w8p">状态</th>
                             <th class="w15p">操作</th>
                         </tr>
                         </thead>
@@ -41,11 +42,15 @@
                             <td>{{$user.Name}}</td>
                             <td>{{$user.Email}}</td>
                             <td class="center">{{$user.Mobile}}</td>
-                            <td class="center">{{$user.CreateTime|date.T "Y-m-d H:i:s"}}</td>
+                            <td class="center">{{dateFormat $user.CreateTime "Y-m-d H:i:s" }}</td>
+                            <td class="center">{{if eq $user.IsDelete 0}} 正常 {{else}} 屏蔽 {{end}}</td>
                             <td class="center">
                                 <a name="edit" data-link="/user/edit?user_id={{$user.Id}}"><i class="glyphicon glyphicon-pencil"> </i>修改</a>
+                                {{if eq $user.IsDelete 0}}
                                 <a name="remove" onclick='Common.confirm("确认要屏蔽吗?", "/user/remove?user_id={{$user.Id}}")'><i class="glyphicon glyphicon-remove"></i>屏蔽</a>
+                                {{else}}
                                 <a name="review" onclick='Common.confirm("确定要恢复吗?", "/user/review?user_id={{$user.Id}}")' data-link="#" ><i class="glyphicon glyphicon-ok"> </i>恢复</a>
+                                {{end}}
                             </td>
                         </tr>
                         {{end}}

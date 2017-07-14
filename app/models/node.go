@@ -61,3 +61,16 @@ func GetNodes() ([]*Node) {
 	query.All(&nodes);
 	return nodes;
 }
+
+//根据 node_id 获取 node
+func GetNodeByNodeId(nodeId int) ([]*Node)  {
+	nodes := make([]*Node, 0)
+	query := orm.NewOrm().QueryTable(TableName("node")).Filter("node_id", nodeId);
+	query.All(&nodes);
+	return nodes;
+}
+
+//修改节点信息
+func UpdateNode(node *Node, fields ...string) (int64, error) {
+	return orm.NewOrm().Update(node, fields...);
+}

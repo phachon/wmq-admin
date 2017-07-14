@@ -1,15 +1,15 @@
 /**
- * Machine 机器
+ * node 节点
  */
-var Machine = {
+var Node = {
 
     bindFancyBox: function() {
 
         $('[name="edit"]').each(function () {
             $(this).fancybox({
-                minWidth: 700,
-                minHeight: 450,
-                width: '70%',
+                minWidth: 500,
+                minHeight: 400,
+                width: '65%',
                 height: '50%',
                 autoSize: false,
                 type: 'iframe',
