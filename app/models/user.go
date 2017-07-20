@@ -49,8 +49,9 @@ func InsertUser(user *User) (int64, error){
 		return 0, fmt.Errorf("密码不能为空!");
 	}
 
-	user.Password = common.Md5Encode(user.Password);
+	encrypt := new(common.Encrypt);
 
+	user.Password = encrypt.Md5Encode(user.Password);
 	user.IsDelete = USER_IS_DELETE_FALSE;
 	user.CreateTime = time.Now().Unix();
 	user.UpdateTime = time.Now().Unix();

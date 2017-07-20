@@ -3,8 +3,25 @@ package models
 import (
 	"fmt"
 	"github.com/astaxie/beego/httplib"
-	"strconv"
 	"encoding/json"
+	"wmq-admin/app/common"
+	"strconv"
+)
+
+const (
+	PUBLISH_MESSAGE_PATH string = "/";
+	ADD_MESSAGE_PATH string = "/message/add";
+	UPDATE_MESSAGE_PATH string = "/message/update";
+	DELETE_MESSAGE_PATH string = "/message/delete";
+	MESSAGE_CONFIG_PATH string = "/config";
+
+	ADD_CONSUMER_PATH string = "/consumer/add";
+	UPDATE_CONSUMER_PATH string = "/consumer/update";
+	DELETE_CONSUMER_PATH string = "/consumer/delete";
+
+	RESTART_SERVICE_PATH string = "/restart";
+	RELOAD_SERVICE_PATH string = "/reload";
+
 )
 
 type Message struct {
@@ -26,6 +43,11 @@ type Consumer struct {
 	Comment   string
 }
 
+type Response struct {
+	Code int8
+	Data []Message
+}
+
 //根据 node_id 获取 所有的消息
 func GetMessagesByNodeId(nodeId int) ([]Message) {
 
@@ -33,16 +55,194 @@ func GetMessagesByNodeId(nodeId int) ([]Message) {
 	ip := selectNode.Ip;
 	managerPort := selectNode.ManagerPort;
 	token := selectNode.Token;
-	nodeUrl := "http://" + ip + ":" + strconv.Itoa(managerPort) + "/config?api-token=" + token;
+	nodeUrl := "http://" + ip + ":" + strconv.Itoa(managerPort) + MESSAGE_CONFIG_PATH +"?api-token=" + token;
 	fmt.Println(nodeUrl)
 
-	var results map[string]interface{};
+	var res Response;
 	response, _ := httplib.Get(nodeUrl).String();
-	json.Unmarshal([]byte(response), &results)
-	data := results["data"].(string)
+	json.Unmarshal([]byte(response), &res);
 
-	var messages []Message
-	json.Unmarshal([]byte(data), &messages)
+	return res.Data;
+}
 
-	return messages;
+// 添加一条 message 到节点
+func AddMessageByNodeId(nodeId int, message *Message) (bool) {
+
+	selectNode := GetNodeByNodeId(nodeId)[0];
+	ip := selectNode.Ip;
+	managerPort := selectNode.ManagerPort;
+	token := selectNode.Token;
+	nodeUrl := "http://" + ip + ":" + strconv.Itoa(managerPort) + ADD_MESSAGE_PATH +"?api-token=" + token;
+	fmt.Println(nodeUrl)
+
+	convert := new(common.Convert)
+	durable := convert.IntToTenString(convert.BoolToInt(message.Durable));
+	isNeedToken := convert.IntToTenString(convert.BoolToInt(message.IsNeedToken));
+
+	nodeUrl += "&Name=" + message.Name +
+		"&Comment=" + message.Comment +
+		"&Durable=" + durable +
+		"&IsNeedToken=" + isNeedToken +
+		"&Mode=" + message.Mode +
+		"&Token=" + message.Token;
+
+	var res Response;
+	response, _ := httplib.Get(nodeUrl).String();
+	json.Unmarshal([]byte(response), &res);
+	code := res.Code;
+	if (code == 1) {
+		return true
+	}else {
+		return false
+	}
+}
+
+//更新一条 message
+func UpdateMessage(nodeId int, message *Message) bool {
+
+	selectNode := GetNodeByNodeId(nodeId)[0];
+	ip := selectNode.Ip;
+	managerPort := selectNode.ManagerPort;
+	token := selectNode.Token;
+	nodeUrl := "http://" + ip + ":" + strconv.Itoa(managerPort) + UPDATE_MESSAGE_PATH + "?api-token=" + token;
+	fmt.Println(nodeUrl)
+
+	convert := new(common.Convert)
+	durable := convert.IntToTenString(convert.BoolToInt(message.Durable));
+	isNeedToken := convert.IntToTenString(convert.BoolToInt(message.IsNeedToken));
+
+	nodeUrl += "&Name=" + message.Name +
+		"&Comment=" + message.Comment +
+		"&Durable=" + durable +
+		"&IsNeedToken=" + isNeedToken +
+		"&Mode=" + message.Mode +
+		"&Token=" + message.Token;
+
+	var res Response;
+	response, _ := httplib.Get(nodeUrl).String();
+	json.Unmarshal([]byte(response), &res);
+	code := res.Code;
+
+	if (code == 1) {
+		return true
+	}else {
+		return false
+	}
+}
+
+// 删除一条 message
+func DeletMessage(nodeId int, name string) bool {
+
+	selectNode := GetNodeByNodeId(nodeId)[0];
+	ip := selectNode.Ip;
+	managerPort := selectNode.ManagerPort;
+	token := selectNode.Token;
+	nodeUrl := "http://" + ip + ":" + strconv.Itoa(managerPort) + DELETE_MESSAGE_PATH + "?api-token=" + token;
+	fmt.Println(nodeUrl)
+
+	nodeUrl += "&Name=" + name;
+
+	var res Response;
+	response, _ := httplib.Get(nodeUrl).String();
+	json.Unmarshal([]byte(response), &res);
+	code := res.Code;
+	if (code == 1) {
+		return true
+	}else {
+		return false
+	}
+}
+
+// 添加一条 consumer
+func AddConsumer(nodeId int, message string, consumer *Consumer) bool {
+
+	selectNode := GetNodeByNodeId(nodeId)[0];
+	ip := selectNode.Ip;
+	managerPort := selectNode.ManagerPort;
+	token := selectNode.Token;
+	nodeUrl := "http://" + ip + ":" + strconv.Itoa(managerPort) + ADD_CONSUMER_PATH + "?api-token=" + token;
+	fmt.Println(nodeUrl)
+
+	convert := new(common.Convert);
+
+	nodeUrl += "&Name=" + message +
+		"&URL=" + consumer.URL +
+		"&Timeout=" + convert.FloatToString(consumer.Timeout, 'b', 5, 64) +
+		"&Code=" + convert.FloatToString(consumer.Code, 'b', 5, 64) +
+		"&CheckCode=" + convert.IntToTenString(convert.BoolToInt(consumer.CheckCode)) +
+		"&Comment=" + consumer.Comment +
+		"&RouteKey=" + consumer.RouteKey;
+
+	var res Response;
+	response, _ := httplib.Get(nodeUrl).String();
+	json.Unmarshal([]byte(response), &res);
+	code := res.Code;
+
+	if (code == 1) {
+		return true
+	}else {
+		return false
+	}
+}
+
+// 添加一条 consumer
+func UpdateConsumer(nodeId int, message string, consumer *Consumer) bool {
+
+	selectNode := GetNodeByNodeId(nodeId)[0];
+	ip := selectNode.Ip;
+	managerPort := selectNode.ManagerPort;
+	token := selectNode.Token;
+	nodeUrl := "http://" + ip + ":" + strconv.Itoa(managerPort) + UPDATE_CONSUMER_PATH + "?api-token=" + token;
+	fmt.Println(nodeUrl)
+
+	convert := new(common.Convert);
+
+	nodeUrl += "&Name=" + message +
+		"&ID=" + consumer.ID +
+		"&URL=" + consumer.URL +
+		"&Timeout=" + convert.FloatToString(consumer.Timeout, 'b', 5, 64) +
+		"&Code=" + convert.FloatToString(consumer.Code, 'b', 5, 64) +
+		"&CheckCode=" + convert.IntToTenString(convert.BoolToInt(consumer.CheckCode)) +
+		"&Comment=" + consumer.Comment +
+		"&RouteKey=" + consumer.RouteKey;
+
+	var res Response;
+	response, _ := httplib.Get(nodeUrl).String();
+	json.Unmarshal([]byte(response), &res);
+	code := res.Code;
+
+	if (code == 1) {
+		return true
+	}else {
+		return false
+	}
+}
+
+//删除一条 consumer
+func DeleteConsumer(nodeId int, message string, consumerId string) bool {
+	selectNode := GetNodeByNodeId(nodeId)[0];
+	ip := selectNode.Ip;
+	managerPort := selectNode.ManagerPort;
+	token := selectNode.Token;
+	nodeUrl := "http://" + ip + ":" + strconv.Itoa(managerPort) + DELETE_CONSUMER_PATH + "?api-token=" + token;
+	fmt.Println(nodeUrl)
+
+	nodeUrl += "&Name=" + message +
+		"&ID=" + consumerId;
+
+	var res Response;
+	response, _ := httplib.Get(nodeUrl).String();
+	json.Unmarshal([]byte(response), &res);
+	code := res.Code;
+
+	if (code == 1) {
+		return true
+	}else {
+		return false
+	}
+
+}
+
+func RestartService(nodeId int) {
+
 }

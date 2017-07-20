@@ -28,7 +28,9 @@ func (this *TemplateController) Login()  {
 	if(len(users) == 0) {
 		this.jsonError("账号错误!", "");
 	}
-	password = common.Md5Encode(password);
+
+	encrypt := new(common.Encrypt);
+	password = encrypt.Md5Encode(password);
 
 	if(users[0].Password != password) {
 		this.jsonError("账号或密码错误!", "");
@@ -47,7 +49,6 @@ func (this *TemplateController) Login()  {
 	//保存 session
 	this.SetSession("author", user)
 	//保存 cookie
-	encrypt := new(common.Encrypt)
 	identify := encrypt.Md5Encode(this.Ctx.Request.UserAgent() + this.getClientIp() + password)
 	passportValue := encrypt.Base64Encode(name + "@" + identify)
 	passport := beego.AppConfig.String("author.passport")

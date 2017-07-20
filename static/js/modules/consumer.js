@@ -1,11 +1,14 @@
 /**
- * message 消息
+ * Consumer 消费
  */
-var Message = {
+var Consumer = {
 
     bindFancyBox: function() {
 
         $('[name="edit"]').each(function () {
+
+
+
             $(this).fancybox({
                 minWidth: 500,
                 minHeight: 400,
@@ -30,21 +33,11 @@ var Message = {
         });
     },
 
-	/**
-	 * node
-     * @param element
-     */
     node: function (element) {
+
         var id = $(element).val();
         var text = $('option[value='+id+']').text();
-        location.href='/message/list?node_id='+id;
-    },
-
-	/**
-	 * consumer
-     * @param consumers
-     */
-    consumer: function (consumers) {
-
+        
+        location.href='/consumer/list?node_id='+id;
     }
 };
