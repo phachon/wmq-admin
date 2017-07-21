@@ -3,8 +3,7 @@
         <div class="col-md-12">
             <div class="panel-body" style="padding: 15px 0;">
                 <ul class="nav nav-tabs">
-                    <li class="active"><a href="/consumer/list">消费列表</a></li>
-                    <li><a href="/consumer/add">添加消费</a></li>
+                    <li class="active"><a href="javascript:;">消费列表</a></li>
                 </ul>
             </div>
             <div class="panel-body" style="padding-left: 8px;">
@@ -15,15 +14,14 @@
                                 <span class="input-group-addon">选择节点</span>
                                 <select class="form-control" onchange="Consumer.node(this)">
                                     {{range $node := .nodes}}
-                                    <option value="{{$node.Id}}">{{$node.Ip}}:{{$node.ManagerPort}}</option>
+                                    <option value="{{$node.Id}}" {{if eq $node.Id $.node_id}} selected {{end}}>{{$node.Ip}}:{{$node.ManagerPort}}</option>
                                     {{end}}
                                 </select>
                             </div>
                         </div>
-                        <div class="col-md-7"></div>
-                        <div class="col-md-2">
-                            <div class="form-group text-left">
-                                <button type="button" class="btn btn-primary"><i class="glyphicon glyphicon-refresh"></i> 重载服务</button>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <button type="button" class="btn btn-primary" name="add_consumer" data-link="/consumer/add?node_id={{.node_id}}"><i class="glyphicon glyphicon-plus"></i> 添加消费者 </button>
                             </div>
                         </div>
                     </form>
@@ -59,7 +57,7 @@
                                         <td class="w80">{{$consumer.CheckCode}}</td>
                                         <td class="w60">{{$consumer.Timeout}}</td>
                                         <td class="w200">{{$consumer.Comment}}</td>
-                                        <td class="w120">
+                                        <td class="w120 center">
                                             <a name="edit" class="glyphicon glyphicon-edit" data-link="/consumer/edit?node_id=1&message={{$message.Name}}&consumer_id={{$consumer.ID}}">修改</a>
                                             <a class="remove glyphicon glyphicon-trash" href="/consumer/remove?consumer_id=">删除</a>
                                         </td>

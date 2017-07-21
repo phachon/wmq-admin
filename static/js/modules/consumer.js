@@ -6,9 +6,7 @@ var Consumer = {
     bindFancyBox: function() {
 
         $('[name="edit"]').each(function () {
-
-
-
+            
             $(this).fancybox({
                 minWidth: 500,
                 minHeight: 400,
@@ -20,7 +18,7 @@ var Consumer = {
             });
         });
 
-        $('[name="consumer"]').each(function () {
+        $('button[name="add_consumer"]').each(function () {
             $(this).fancybox({
                 minWidth: 500,
                 minHeight: 400,
@@ -34,7 +32,6 @@ var Consumer = {
     },
 
     node: function (element) {
-
         var id = $(element).val();
         var text = $('option[value='+id+']').text();
         

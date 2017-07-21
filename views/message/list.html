@@ -3,8 +3,7 @@
         <div class="col-md-12">
             <div class="panel-body" style="padding: 15px 0;">
                 <ul class="nav nav-tabs">
-                    <li class="active"><a href="/message/list">消息列表</a></li>
-                    <li><a href="/message/add">添加消息</a></li>
+                    <li class="active"><a href="javascript:;">消息列表</a></li>
                 </ul>
             </div>
             <div class="panel-body" style="padding-left: 8px;">
@@ -20,10 +19,10 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-md-7"></div>
-                        <div class="col-md-2">
-                            <div class="form-group text-left">
-                                <button type="button" class="btn btn-primary"><i class="glyphicon glyphicon-refresh"></i> 重载服务</button>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <button type="button" class="btn btn-primary" name="add_message" data-link="/message/add?node_id={{.node_id}}"><i class="glyphicon glyphicon-plus"></i> 添加消息 </button>
+                                <button type="button" class="btn btn-danger" style="margin-left: 5px;"><i class="glyphicon glyphicon-refresh"></i> 重载节点 </button>
                             </div>
                         </div>
                     </form>
@@ -57,7 +56,6 @@
                             <td class="center">{{$message.Token}}</td>
                             <td class="center">{{$message.Comment}}</td>
                             <td class="center">
-                                <!--<a data-link="" name="consumer"><i class="glyphicon glyphicon-list-alt"></i> 消费者</a>-->
                                 <a data-link="/message/edit?node_id={{$.node_id}}&message={{$message.Name}}" name="edit"><i class="glyphicon glyphicon-pencil"></i> 修改</a>
                                 <a onclick="Common.confirm('确定要删除吗？')"><i class="glyphicon glyphicon-remove"></i> 删除</a>
                             </td>

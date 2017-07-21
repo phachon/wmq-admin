@@ -1,58 +1,47 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <div class="panel-body" style="padding: 15px 0;">
-                <ul class="nav nav-tabs">
-                    <li><a href="/consumer/list">消费列表</a></li>
-                    <li class="active"><a href="consumer/add">添加消费者</a></li>
-                </ul>
-            </div>
+            <br>
             <div class="panel-body">
-                <form class="form-horizontal">
+                <form class="form-horizontal" method="post" action="/consumer/save" onsubmit="return false">
+                    <input type="hidden" name="node_id" value="{{.node_id}}">
                     <div class="form-group">
-                        <label class="col-sm-1 control-label"><span class="text-danger"> * </span>名称</label>
-                        <div class="col-sm-4">
-                            <input type="text" name="name" class="form-control" placeholder="消费名称" required>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-1 control-label"><span class="text-danger"> * </span>接口</label>
-                        <div class="col-sm-4">
+                        <label class="col-sm-2 control-label"><span class="text-danger"> * </span>消费URL</label>
+                        <div class="col-sm-6">
                             <input type="text" name="url" class="form-control" placeholder="消费接口" required>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-1 control-label"><span class="text-danger"> * </span>消息</label>
-                        <div class="col-sm-4">
-                            <select class="form-control" name="message_id">
-                                <option value="1">video</option>
-                                <option value="2">new</option>
-                                <option value="3">stream</option>
+                        <label class="col-sm-2 control-label"><span class="text-danger"> * </span>选择消息</label>
+                        <div class="col-sm-6">
+                            <select name="message" class="form-control">
+                                {{range $message := .messages}}
+                                <option value="{{$message.Name}}">{{$message.Name}}</option>
+                                {{end}}
                             </select>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-1 control-label"><span class="text-danger"> * </span>route_key</label>
-                        <div class="col-sm-4">
-                            <input type="text" name="route_key" class="form-control" placeholder="route_key" required>
+                        <label class="col-sm-2 control-label"><span class="text-danger"> * </span>RouteKey</label>
+                        <div class="col-sm-6">
+                            <input type="text" name="route_key" class="form-control" placeholder="RouteKey" value="" required>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-1 control-label"><span class="text-danger"> * </span>是否验证</label>
-                        <div class="col-sm-4">
-                            <div class="radio">
-                                <label>
-                                    <input type="radio" name="token" value="1" checked> 是
-                                </label>
-                                <label>
-                                    <input type="radio" name="token" value="0"> 否
-                                </label>
-                            </div>
+                        <label class="col-sm-2 control-label"><span class="text-danger"> * </span>超时时间</label>
+                        <div class="col-sm-6">
+                            <input type="text" name="timeout" class="form-control" placeholder="超时时间(毫秒)" value="" required>
                         </div>
                     </div>
                     <div class="form-group">
-                        <div class="col-sm-offset-1 col-sm-10">
-                            <button type="submit" onclick="" class="btn btn-success">保存</button>
+                        <label class="col-sm-2 control-label">备注</label>
+                        <div class="col-sm-6">
+                            <input type="text" name="comment" class="form-control" placeholder="备注" value="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button type="button" name="submit" onclick="Form.ajaxSubmit(this.form, true)" class="btn btn-success">保存</button>
                         </div>
                     </div>
                 </form>

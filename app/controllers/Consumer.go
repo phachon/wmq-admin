@@ -20,6 +20,7 @@ func (this *ConsumerController) List()  {
 
 	nodes := models.GetNodes();
 	this.Data["nodes"] = nodes;
+	this.Data["node_id"] = nodeId;
 	this.Data["messages"] = messages;
 
 	this.display("consumer/list");
@@ -27,7 +28,35 @@ func (this *ConsumerController) List()  {
 
 //添加消费者
 func (this *ConsumerController) Add() {
+
+	nodeId, _ := this.GetInt("node_id");
+
+	messages := models.GetMessagesByNodeId(nodeId);
+
+	this.layoutHtml = "layout/template";
+	this.Data["node_id"] = nodeId;
+	this.Data["messages"] = messages;
 	this.display("consumer/form");
+}
+
+//添加保存
+func (this *ConsumerController) Save() {
+
+	var consumer = new(models.Consumer);
+
+	nodeId, _ := this.GetInt("node_id");
+	messageName := this.GetString("message");
+	consumer.URL = this.GetString("url");
+	consumer.RouteKey = this.GetString("route_key");
+	consumer.Timeout, _ = this.GetFloat("timeout");
+	consumer.Comment = this.GetString("comment");
+
+	res, err := models.AddConsumer(nodeId, messageName, consumer);
+	if(!res) {
+		this.jsonError(err.Error(), "");
+	}
+
+	this.jsonSuccess("添加消费者成功!", "/consumer/list");
 }
 
 //修改消费者
@@ -56,7 +85,6 @@ func (this *ConsumerController) Edit() {
 	this.Data["consumer"] = consumerValue;
 	this.Data["node_id"] = nodeId;
 	this.Data["selectMessage"] = messageName;
-	this.Data["messages"] = messages;
 	this.display("consumer/edit");
 }
 

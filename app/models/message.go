@@ -66,7 +66,22 @@ func GetMessagesByNodeId(nodeId int) ([]Message) {
 }
 
 // 添加一条 message 到节点
-func AddMessageByNodeId(nodeId int, message *Message) (bool) {
+func AddMessageByNodeId(nodeId int, message *Message) (bool, error) {
+
+	if(nodeId == 0) {
+		return false, fmt.Errorf("%s", "node_id error!");
+	}
+	if(message.Name == "") {
+		return false, fmt.Errorf("%s", "消息名称不能为空!");
+	}
+	if(message.Mode == "") {
+		return false, fmt.Errorf("%s", "没有选择消息模式!");
+	}
+	if(message.IsNeedToken) {
+		if(message.Token == "") {
+			return false, fmt.Errorf("%s", "没有填写token!");
+		}
+	}
 
 	selectNode := GetNodeByNodeId(nodeId)[0];
 	ip := selectNode.Ip;
@@ -90,11 +105,11 @@ func AddMessageByNodeId(nodeId int, message *Message) (bool) {
 	response, _ := httplib.Get(nodeUrl).String();
 	json.Unmarshal([]byte(response), &res);
 	code := res.Code;
-	if (code == 1) {
-		return true
-	}else {
-		return false
+	if (code != 1) {
+		return false, fmt.Errorf("%s", "调用接口失败!");
 	}
+
+	return true, fmt.Errorf("%s", "");
 }
 
 //更新一条 message
@@ -191,7 +206,6 @@ func AddConsumer(nodeId int, message string, consumer *Consumer) (bool, error) {
 	managerPort := selectNode.ManagerPort;
 	token := selectNode.Token;
 	nodeUrl := "http://" + ip + ":" + strconv.Itoa(managerPort) + ADD_CONSUMER_PATH + "?api-token=" + token;
-	fmt.Println(nodeUrl)
 
 	convert := new(common.Convert);
 
@@ -202,6 +216,7 @@ func AddConsumer(nodeId int, message string, consumer *Consumer) (bool, error) {
 		"&CheckCode=" + convert.IntToTenString(convert.BoolToInt(consumer.CheckCode)) +
 		"&Comment=" + consumer.Comment +
 		"&RouteKey=" + consumer.RouteKey;
+	fmt.Println(nodeUrl);
 
 	var res Response;
 	response, _ := httplib.Get(nodeUrl).String();
