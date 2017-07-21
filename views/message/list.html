@@ -57,7 +57,7 @@
                             <td class="center">{{$message.Comment}}</td>
                             <td class="center">
                                 <a data-link="/message/edit?node_id={{$.node_id}}&message={{$message.Name}}" name="edit"><i class="glyphicon glyphicon-pencil"></i> 修改</a>
-                                <a onclick="Common.confirm('确定要删除吗？')"><i class="glyphicon glyphicon-remove"></i> 删除</a>
+                                <a onclick="Common.confirm('确定要删除吗？', '/message/delete?node_id={{$.node_id}}&message={{$message.Name}}')"><i class="glyphicon glyphicon-remove"></i> 删除</a>
                             </td>
                         </tr>
                         {{end}}

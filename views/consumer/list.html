@@ -59,7 +59,7 @@
                                         <td class="w200">{{$consumer.Comment}}</td>
                                         <td class="w120 center">
                                             <a name="edit" class="glyphicon glyphicon-edit" data-link="/consumer/edit?node_id=1&message={{$message.Name}}&consumer_id={{$consumer.ID}}">修改</a>
-                                            <a class="remove glyphicon glyphicon-trash" href="/consumer/remove?consumer_id=">删除</a>
+                                            <a onclick="Common.confirm('确定要删除吗？', '/consumer/delete?node_id={{$.node_id}}&message={{$message.Name}}&consumer_id={{$consumer.ID}}')" class="remove glyphicon glyphicon-trash">删除</a>
                                         </td>
                                     </tr>
                                     {{end}}

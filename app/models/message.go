@@ -161,7 +161,14 @@ func UpdateMessage(nodeId int, message *Message) (bool, error) {
 }
 
 // 删除一条 message
-func DeletMessage(nodeId int, name string) bool {
+func DeleteMessage(nodeId int, name string) (bool, error) {
+
+	if(nodeId == 0) {
+		return false, fmt.Errorf("%s", "node_id error!");
+	}
+	if(name == "") {
+		return false, fmt.Errorf("%s", "message name error!");
+	}
 
 	selectNode := GetNodeByNodeId(nodeId)[0];
 	ip := selectNode.Ip;
@@ -176,11 +183,11 @@ func DeletMessage(nodeId int, name string) bool {
 	response, _ := httplib.Get(nodeUrl).String();
 	json.Unmarshal([]byte(response), &res);
 	code := res.Code;
-	if (code == 1) {
-		return true
-	}else {
-		return false
+	if (code != 1) {
+		return false, fmt.Errorf("%s", "调用接口失败!");
 	}
+
+	return true, fmt.Errorf("%s", "");
 }
 
 // 添加一条 consumer
@@ -278,27 +285,37 @@ func UpdateConsumer(nodeId int, message string, consumer *Consumer) (bool, error
 }
 
 //删除一条 consumer
-func DeleteConsumer(nodeId int, message string, consumerId string) bool {
+func DeleteConsumer(nodeId int, message string, consumerId string) (bool, error) {
+
+	if(nodeId == 0) {
+		return false, fmt.Errorf("%s", "node_id error!");
+	}
+	if(message == "") {
+		return false, fmt.Errorf("%s", "message error!");
+	}
+	if(consumerId == "") {
+		return false, fmt.Errorf("%s", "consumer_id error!");
+	}
+
 	selectNode := GetNodeByNodeId(nodeId)[0];
 	ip := selectNode.Ip;
 	managerPort := selectNode.ManagerPort;
 	token := selectNode.Token;
 	nodeUrl := "http://" + ip + ":" + strconv.Itoa(managerPort) + DELETE_CONSUMER_PATH + "?api-token=" + token;
-	fmt.Println(nodeUrl)
 
-	nodeUrl += "&Name=" + message +
-		"&ID=" + consumerId;
+	nodeUrl += "&Name=" + message + "&ID=" + consumerId;
+	fmt.Println(nodeUrl);
 
 	var res Response;
 	response, _ := httplib.Get(nodeUrl).String();
 	json.Unmarshal([]byte(response), &res);
 	code := res.Code;
 
-	if (code == 1) {
-		return true
-	}else {
-		return false
+	if (code != 1) {
+		return false, fmt.Errorf("%s", "调用接口失败!");
 	}
+
+	return true, fmt.Errorf("%s", "");
 }
 
 func RestartService(nodeId int) {

@@ -108,3 +108,18 @@ func (this *ConsumerController) Modify() {
 
 	this.jsonSuccess("修改消费者成功!", "/consumer/list");
 }
+
+//删除消费者
+func (this *ConsumerController) Delete() {
+
+	nodeId, _ := this.GetInt("node_id");
+	messageName := this.GetString("message");
+	consumerId := this.GetString("consumer_id");
+
+	res, err := models.DeleteConsumer(nodeId, messageName, consumerId);
+	if(!res) {
+		this.jsonError(err.Error(), "");
+	}
+
+	this.jsonSuccess("删除消费者成功!", "/consumer/list");
+}

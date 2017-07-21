@@ -99,3 +99,16 @@ func (this *MessageController) Modify()  {
 	this.jsonSuccess("修改消息成功", "/message/list");
 }
 
+//删除消息
+func (this *MessageController) Delete() {
+
+	nodeId, _ := this.GetInt("node_id");
+	messageName := this.GetString("message");
+
+	res, err := models.DeleteMessage(nodeId, messageName);
+	if(!res) {
+		this.jsonError(err.Error(), "");
+	}
+
+	this.jsonSuccess("删除消息成功", "/message/list");
+}
