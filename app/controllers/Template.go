@@ -21,7 +21,7 @@ type jsonValue struct {
 	code int
 	message string
 	redirect string
-	data map[string]interface{}
+	data interface{}
 }
 
 //执行前

@@ -74,3 +74,8 @@ func GetNodeByNodeId(nodeId int) ([]*Node)  {
 func UpdateNode(node *Node, fields ...string) (int64, error) {
 	return orm.NewOrm().Update(node, fields...);
 }
+
+//删除节点
+func DeleteNode(node *Node) (int64, error) {
+	return orm.NewOrm().Delete(node);
+}

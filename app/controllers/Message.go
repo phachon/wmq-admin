@@ -16,7 +16,7 @@ func (this *MessageController) List() {
 		nodeId = 1;
 	}
 
-	messages := models.GetMessagesByNodeId(nodeId)
+	messages := models.GetMessagesByNodeId(nodeId);
 
 	nodes := models.GetNodes();
 	this.Data["nodes"] = nodes;
@@ -111,4 +111,33 @@ func (this *MessageController) Delete() {
 	}
 
 	this.jsonSuccess("删除消息成功", "/message/list");
+}
+
+//测试发送
+func (this *MessageController) Test() {
+
+	nodeId, _ := this.GetInt("node_id");
+
+	messages := models.GetMessagesByNodeId(nodeId)
+
+	this.layoutHtml = "layout/template";
+	this.Data["node_id"] = nodeId;
+	this.Data["messages"] = messages;
+	this.display("message/test");
+}
+
+//发送数据
+func (this *MessageController) Send() {
+
+	nodeId, _ := this.GetInt("node_id");
+	message := this.GetString("message");
+	data := this.GetString("data");
+	routeKey := this.GetString("route_key");
+
+	res, err := models.PublishMessage(nodeId, message, data, routeKey);
+	if(!res) {
+		this.jsonError(err.Error(), "");
+	}
+
+	this.jsonSuccess("发送ok", "/message/list");
 }

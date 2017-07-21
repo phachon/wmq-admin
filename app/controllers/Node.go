@@ -79,3 +79,43 @@ func (this *NodeController) Modify() {
 
 	this.jsonSuccess("修改节点成功", "/node/list");
 }
+
+//删除节点
+func (this *NodeController) Delete() {
+	Node := new(models.Node);
+
+	Node.Id, _ = this.GetInt64("node_id");
+
+	res, err := models.DeleteNode(Node);
+	if(res == 0 || err != nil) {
+		this.jsonError(err.Error(), "");
+	}
+
+	this.jsonSuccess("删除节点成功", "/node/list");
+}
+
+//重启节点
+func (this *NodeController) Restart() {
+
+	nodeId, _ := this.GetInt("node_id");
+
+	res, err := models.RestartService(nodeId);
+	if(!res) {
+		this.jsonError(err.Error(), "");
+	}
+
+	this.jsonSuccess("重启节点成功", "/node/list");
+}
+
+//重载节点
+func (this *NodeController) Reload() {
+
+	nodeId, _ := this.GetInt("node_id");
+
+	res, err := models.ReloadService(nodeId);
+	if(!res) {
+		this.jsonError(err.Error(), "");
+	}
+
+	this.jsonSuccess("重载节点成功", "/node/list");
+}

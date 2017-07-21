@@ -22,6 +22,7 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <button type="button" class="btn btn-primary" name="add_consumer" data-link="/consumer/add?node_id={{.node_id}}"><i class="glyphicon glyphicon-plus"></i> 添加消费者 </button>
+                                <button onclick="Common.confirm('确定要重载该节点吗？', '/node/reload?node_id={{.node_id}}')" type="button" class="btn btn-danger" style="margin-left: 5px;"><i class="glyphicon glyphicon-refresh"></i> 重载节点 </button>
                             </div>
                         </div>
                     </form>
@@ -32,14 +33,14 @@
                     <table class="table table-bordered">
                         <thead>
                         <tr>
-                            <th class="w150">消息名称</th>
-                            <th class="w100">交换器模式</th>
+                            <th class="w10p">消息名称</th>
+                            <th class="w8p">交换器模式</th>
                             <th>消费接口</th>
                             <th class="w80">RouteKey</th>
-                            <th class="w80">状态</th>
+                            <th class="w90">状态</th>
                             <th class="w60">超时</th>
                             <th class="w200">备注</th>
-                            <th class="w120">操作</th>
+                            <th class="w100">操作</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -51,13 +52,19 @@
                                 <table class="table table-hover table-bordered" style="border-width: 0 0 0 0;border:none;margin-bottom: 0px">
                                     <tbody>
                                     {{range $consumer := $message.Consumers}}
-                                    <tr style="border:none;">
+                                    <tr id="consumer_{{$consumer.ID}}" style="border:none;">
                                         <td>{{$consumer.URL}}</td>
                                         <td class="w80">{{$consumer.RouteKey}}</td>
-                                        <td class="w80">{{$consumer.CheckCode}}</td>
+                                        <td class="w90 consumer_status">
+                                            {{if eq $consumer.CheckCode true}}
+                                            <label class="text-success">running(0)</label>
+                                            {{else}}
+                                            <label class="text-danger">stoped</label>
+                                            {{end}}
+                                        </td>
                                         <td class="w60">{{$consumer.Timeout}}</td>
                                         <td class="w200">{{$consumer.Comment}}</td>
-                                        <td class="w120 center">
+                                        <td class="w100 center">
                                             <a name="edit" class="glyphicon glyphicon-edit" data-link="/consumer/edit?node_id=1&message={{$message.Name}}&consumer_id={{$consumer.ID}}">修改</a>
                                             <a onclick="Common.confirm('确定要删除吗？', '/consumer/delete?node_id={{$.node_id}}&message={{$message.Name}}&consumer_id={{$consumer.ID}}')" class="remove glyphicon glyphicon-trash">删除</a>
                                         </td>
@@ -71,6 +78,7 @@
                         </tbody>
                     </table>
                 </div>
+                <div class="panel-footer"></div>
             </div>
         </div>
     </div>
@@ -78,4 +86,7 @@
 <script src="/static/js/modules/consumer.js"></script>
 <script type="text/javascript">
     Consumer.bindFancyBox();
+    setInterval(function(){
+        Consumer.status();
+    },10000);
 </script>

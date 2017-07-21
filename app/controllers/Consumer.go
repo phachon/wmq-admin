@@ -123,3 +123,17 @@ func (this *ConsumerController) Delete() {
 
 	this.jsonSuccess("删除消费者成功!", "/consumer/list");
 }
+
+//获取消费者状态
+func (this *ConsumerController) Status() {
+
+	nodeId, _ := this.GetInt("node_id");
+
+	results, err := models.ConsumerStatus(nodeId);
+	if(err != nil) {
+		this.jsonError(err.Error(), "");
+	}
+
+	this.jsonValue.data = results;
+	this.jsonSuccess("", "");
+}

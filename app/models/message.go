@@ -10,10 +10,12 @@ import (
 
 const (
 	PUBLISH_MESSAGE_PATH string = "/";
+
 	ADD_MESSAGE_PATH string = "/message/add";
 	UPDATE_MESSAGE_PATH string = "/message/update";
 	DELETE_MESSAGE_PATH string = "/message/delete";
 	MESSAGE_CONFIG_PATH string = "/config";
+	MESSAGE_STATUS_PATH string = "/message/status";
 
 	ADD_CONSUMER_PATH string = "/consumer/add";
 	UPDATE_CONSUMER_PATH string = "/consumer/update";
@@ -21,7 +23,6 @@ const (
 
 	RESTART_SERVICE_PATH string = "/restart";
 	RELOAD_SERVICE_PATH string = "/reload";
-
 )
 
 type Message struct {
@@ -33,6 +34,7 @@ type Message struct {
 	Token       string
 	Comment     string
 }
+
 type Consumer struct {
 	ID        string
 	URL       string
@@ -43,9 +45,16 @@ type Consumer struct {
 	Comment   string
 }
 
+type Status struct {
+	Count int
+	ID string
+	LastTime string
+	MsgName string
+}
+
 type Response struct {
 	Code int8
-	Data []Message
+	Data string
 }
 
 //根据 node_id 获取 所有的消息
@@ -58,7 +67,12 @@ func GetMessagesByNodeId(nodeId int) ([]Message) {
 	nodeUrl := "http://" + ip + ":" + strconv.Itoa(managerPort) + MESSAGE_CONFIG_PATH +"?api-token=" + token;
 	fmt.Println(nodeUrl)
 
-	var res Response;
+	type ConfigResponse struct {
+		Code int8
+		Data []Message
+	}
+
+	var res ConfigResponse;
 	response, _ := httplib.Get(nodeUrl).String();
 	json.Unmarshal([]byte(response), &res);
 
@@ -318,6 +332,133 @@ func DeleteConsumer(nodeId int, message string, consumerId string) (bool, error)
 	return true, fmt.Errorf("%s", "");
 }
 
-func RestartService(nodeId int) {
+//重启服务
+func RestartService(nodeId int) (bool, error) {
 
+	if(nodeId == 0) {
+		return false, fmt.Errorf("%s", "node_id error!");
+	}
+
+	selectNode := GetNodeByNodeId(nodeId)[0];
+	ip := selectNode.Ip;
+	managerPort := selectNode.ManagerPort;
+	token := selectNode.Token;
+	nodeUrl := "http://" + ip + ":" + strconv.Itoa(managerPort) + RESTART_SERVICE_PATH + "?api-token=" + token;
+
+	fmt.Println(nodeUrl);
+
+	var res Response;
+	response, _ := httplib.Get(nodeUrl).String();
+	json.Unmarshal([]byte(response), &res);
+	code := res.Code;
+
+	if (code != 1) {
+		return false, fmt.Errorf("%s", "调用接口失败:" + res.Data);
+	}
+
+	return true, fmt.Errorf("%s", "");
+}
+
+//重载服务
+func ReloadService(nodeId int) (bool, error) {
+
+	if(nodeId == 0) {
+		return false, fmt.Errorf("%s", "node_id error!");
+	}
+
+	selectNode := GetNodeByNodeId(nodeId)[0];
+	ip := selectNode.Ip;
+	managerPort := selectNode.ManagerPort;
+	token := selectNode.Token;
+	nodeUrl := "http://" + ip + ":" + strconv.Itoa(managerPort) + RELOAD_SERVICE_PATH + "?api-token=" + token;
+
+	fmt.Println(nodeUrl);
+
+	var res Response;
+	response, _ := httplib.Get(nodeUrl).String();
+	json.Unmarshal([]byte(response), &res);
+	code := res.Code;
+
+	if (code != 1) {
+		return false, fmt.Errorf("%s", "调用接口失败:" + res.Data);
+	}
+
+	return true, fmt.Errorf("%s", "");
+}
+
+//获取 node_id 所有消费者状态
+func ConsumerStatus(nodeId int) ([]map[string]interface{}, error){
+
+	if(nodeId == 0) {
+		return nil, fmt.Errorf("%s", "node_id error!");
+	}
+
+	selectNode := GetNodeByNodeId(nodeId)[0];
+	ip := selectNode.Ip;
+	managerPort := selectNode.ManagerPort;
+	token := selectNode.Token;
+	nodeUrl := "http://" + ip + ":" + strconv.Itoa(managerPort) + MESSAGE_STATUS_PATH + "?api-token=" + token;
+
+	type StatusResponse struct {
+		Code int
+		Data []map[string]interface{};
+	}
+
+	var consumerStatus []map[string]interface{};
+
+	messages := GetMessagesByNodeId(nodeId);
+	for _, message := range messages {
+		statusUrl := nodeUrl + "&Name=" + message.Name;
+		fmt.Println(statusUrl);
+		var res StatusResponse;
+		response, _ := httplib.Get(statusUrl).String();
+		json.Unmarshal([]byte(response), &res);
+		if(res.Code == 1) {
+			consumerStatus = append(consumerStatus, res.Data...);
+		}
+	}
+
+	return consumerStatus, nil;
+}
+
+//publish a message
+func PublishMessage(nodeId int, messageName string, data string, routeKey string) (bool, error) {
+
+	if(nodeId == 0) {
+		return false, fmt.Errorf("%s", "node_id error!");
+	}
+	if(messageName == "") {
+		return false, fmt.Errorf("%s", "没有选择 message!");
+	}
+	if(data == "") {
+		return false, fmt.Errorf("%s", "data is empty!");
+	}
+
+	selectNode := GetNodeByNodeId(nodeId)[0];
+	ip := selectNode.Ip;
+	messagePort := selectNode.MessagePort;
+	publishUrl := "http://" + ip + ":" + strconv.Itoa(messagePort) + PUBLISH_MESSAGE_PATH + ":" + messageName + "?:" + data;
+
+	fmt.Println("Test Publish Message: " + publishUrl);
+
+	messages := GetMessagesByNodeId(nodeId)
+	var messageValue Message;
+	for _, message := range messages {
+		if(message.Name != messageName) {
+			continue;
+		}
+		messageValue = message;
+	}
+
+	request := httplib.Get(publishUrl);
+	if(messageValue.IsNeedToken) {
+		request.Header("Token", messageValue.Token);
+	}
+	if(routeKey != "") {
+		request.Header("RouteKey","");
+	}
+
+	request.Response();
+
+	return true, nil;
 }

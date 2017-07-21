@@ -1,0 +1,41 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <br>
+            <div class="panel-body">
+                <form class="form-horizontal" action="/message/send" method="post" onsubmit="return false">
+                    <input type="hidden" name="node_id" value="{{.node_id}}">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label"><span class="text-danger"> * </span> 选择消息 </label>
+                        <div class="col-sm-6">
+                            <select name="message" class="form-control">
+                                {{range $message := .messages}}
+                                <option value="{{$message.Name}}">{{$message.Name}}</option>
+                                {{end}}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label"><span class="text-danger"> * </span> 发送数据 </label>
+                        <div class="col-sm-6">
+                            <textarea name="data" class="form-control" rows="6"></textarea><br/>
+                            <span class="text-danger"> * 数据格式如：name=pppp&id=16&email=ada@123.com </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label"> RouteKey </label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" name="route_key" value="" placeholder="RouteKey" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button type="button" name="submit" onclick="Form.ajaxSubmit(this.form, true)" class="btn btn-success">发送</button>
+                        </div>
+                    </div>
+                </form>
+                <hr>
+            </div>
+        </div>
+    </div>
+</div>

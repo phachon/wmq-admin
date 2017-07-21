@@ -48,26 +48,19 @@
                             <td class="center">{{$node.CreateTime}}</td>
                             <td class="center">
                                 <a name="edit" data-link="/node/edit?node_id={{$node.Id}}"><i class="glyphicon glyphicon-pencil"> </i>修改</a>
+                                <a name="delete" onclick='Common.confirm("确认要删除吗?", "/node/delete?node_id={{$node.Id}}")'><i class="glyphicon glyphicon-remove"></i>删除</a>
                             </td>
                         </tr>
                         {{end}}
                         </tbody>
                     </table>
                 </div>
-                <div class="panel-footer">
-                    <div class="row">
-                        <div class="col-md-8 m-pagination" id="paginator">
-                        </div>
-                    </div>
-                </div>
+                <div class="panel-footer"></div>
             </div>
         </div>
     </div>
 </div>
 <script src="/static/js/modules/node.js"></script>
 <script type="text/javascript">
-//    var pageData = [];
-//    pageData.push();
-//    Common.paginator("#paginator", pageData);
     Node.bindFancyBox();
 </script>

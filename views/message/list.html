@@ -14,15 +14,16 @@
                                 <span class="input-group-addon">选择节点</span>
                                 <select class="form-control" onchange="Message.node(this)">
                                     {{range $node := .nodes}}
-                                    <option value="{{$node.Id}}" {{if eq $node.Id $.node_id}} selected {{end}}>{{$node.Ip}}:{{$node.MessagePort}}</option>
+                                    <option value="{{$node.Id}}" {{if eq $node.Id $.node_id}} selected {{end}}>{{$node.Ip}}:{{$node.ManagerPort}}</option>
                                     {{end}}
                                 </select>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-5">
                             <div class="form-group">
                                 <button type="button" class="btn btn-primary" name="add_message" data-link="/message/add?node_id={{.node_id}}"><i class="glyphicon glyphicon-plus"></i> 添加消息 </button>
-                                <button type="button" class="btn btn-danger" style="margin-left: 5px;"><i class="glyphicon glyphicon-refresh"></i> 重载节点 </button>
+                                <button type="button" class="btn btn-success" name="test_message" data-link="/message/test?node_id={{.node_id}}" style="margin-left: 5px;"><i class="glyphicon glyphicon-send"></i> 测试消息 </button>
+                                <button onclick="Common.confirm('确定要重启该节点吗？', '/node/reload?node_id={{.node_id}}')" type="button" class="btn btn-danger" style="margin-left: 5px;"><i class="glyphicon glyphicon-refresh"></i> 重启节点 </button>
                             </div>
                         </div>
                     </form>
@@ -64,6 +65,7 @@
                         </tbody>
                     </table>
                 </div>
+                <div class="panel-footer"></div>
             </div>
         </div>
     </div>
