@@ -23,6 +23,9 @@ const (
 
 	RESTART_SERVICE_PATH string = "/restart";
 	RELOAD_SERVICE_PATH string = "/reload";
+
+	LOG_SEARCH_PATH string = "/log";
+	LOG_FILE_LIST_PATH string = "/log/list";
 )
 
 type Message struct {
@@ -437,7 +440,7 @@ func PublishMessage(nodeId int, messageName string, data string, routeKey string
 	selectNode := GetNodeByNodeId(nodeId)[0];
 	ip := selectNode.Ip;
 	messagePort := selectNode.MessagePort;
-	publishUrl := "http://" + ip + ":" + strconv.Itoa(messagePort) + PUBLISH_MESSAGE_PATH + ":" + messageName + "?:" + data;
+	publishUrl := "http://" + ip + ":" + strconv.Itoa(messagePort) + PUBLISH_MESSAGE_PATH + messageName + "?" + data;
 
 	fmt.Println("Test Publish Message: " + publishUrl);
 
@@ -455,10 +458,40 @@ func PublishMessage(nodeId int, messageName string, data string, routeKey string
 		request.Header("Token", messageValue.Token);
 	}
 	if(routeKey != "") {
-		request.Header("RouteKey","");
+		request.Header("RouteKey", routeKey);
 	}
 
 	request.Response();
 
 	return true, nil;
+}
+
+//搜索日志
+func LogSearch(nodeId int, keyword string, logType string) (string, error) {
+
+	if(nodeId == 0) {
+		return "", fmt.Errorf("%s", "node_id error!");
+	}
+
+	selectNode := GetNodeByNodeId(nodeId)[0];
+	ip := selectNode.Ip;
+	managerPort := selectNode.ManagerPort;
+	token := selectNode.Token;
+	nodeUrl := "http://" + ip + ":" + strconv.Itoa(managerPort) + LOG_SEARCH_PATH + "?api-token=" + token;
+	nodeUrl += "&keyword=" + keyword + "&type=" + logType
+
+	fmt.Println(nodeUrl);
+
+	var res Response;
+	response, _ := httplib.Get(nodeUrl).String();
+	json.Unmarshal([]byte(response), &res);
+	code := res.Code;
+
+	if (code != 1) {
+		return "", fmt.Errorf("%s", "调用接口失败:" + res.Data);
+	}
+
+	fmt.Println(res.Data);
+
+	return res.Data, nil;
 }

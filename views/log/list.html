@@ -3,35 +3,39 @@
         <div class="col-md-12">
             <div class="panel-body" style="padding: 15px 0;">
                 <ul class="nav nav-tabs">
-                    <li class="active"><a href="log.html">日志列表</a></li>
-                    <!--<li><a href="log_error.html">错误日志</a></li>-->
-                    <!--<li><a href="log_debug.html">调试日志</a></li>-->
+                    <li class="active"><a href="javascript:;">Wmq日志</a></li>
+                    <!--<li><a href="log_debug.html">系统日志</a></li>-->
                 </ul>
             </div>
-            <div class="panel-body">
+            <div class="panel-body" style="padding-left: 9px;">
                 <div class="row">
-                    <form>
-                        <div class="col-md-4">
+                    <form action="/log/list" method="post">
+                        <div class="col-md-3">
                             <div class="input-group">
-                                <div class="btn-group">
-                                    <a type="button" class="btn btn-default disabled" href="javascript:;">日志条数</a>
-                                    <button type="button" class="btn btn-default active">20</button>
-                                    <button type="button" class="btn btn-default">50</button>
-                                    <button type="button" class="btn btn-default">80</button>
-                                    <button type="button" class="btn btn-default">100</button>
-                                    <a type="button" class="btn btn-default disabled" href="javascript:;">条</a>
-                                </div>
+                                <span class="input-group-addon">节点</span>
+                                <select class="form-control" name="node_id">
+                                    {{range $node := .nodes}}
+                                    <option value="{{$node.Id}}" {{if eq $node.Id $.node_id}} selected {{end}}>{{$node.Ip}}:{{$node.ManagerPort}}</option>
+                                    {{end}}
+                                </select>
                             </div>
                         </div>
                         <div class="col-md-2">
+                            <div class="input-group">
+                                <span class="input-group-addon">日志类型</span>
+                                <select class="form-control" name="type">
+                                    <option value="errror" {{if eq .log_type "error"}} selected {{end}}>ERROR</option>
+                                    <option value="info" {{if eq .log_type "info"}} selected {{end}}>INFO</option>
+                                    <option value="debug" {{if eq .log_type "debug"}} selected {{end}}>DEBUG</option>
+                                </select>
+                            </div>
                         </div>
-                        <div class="col-md-3"></div>
                         <div class="col-md-3">
                             <div class="input-group">
-                                <input class="form-control" type="text" value="" placeholder="搜索" name="keyword">
-                                  <span class="input-group-btn">
-                                    <button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-search"></i></button>
-                                  </span>
+                                <input class="form-control" name="keyword" type="text" value="{{.keyword}}" placeholder="关键字">
+                                <span class="input-group-btn">
+                                  <button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-search"></i></button>
+                                </span>
                             </div>
                         </div>
                     </form>

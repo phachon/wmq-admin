@@ -83,9 +83,9 @@ func (this *MessageController) Modify()  {
 
 	message := new(models.Message)
 
-	nodeId, _ := this.GetInt("node_id");
-	message.Name = this.GetString("name");
-	message.Mode = this.GetString("mode");
+	nodeId, _ := this.GetInt("node_id", 0);
+	message.Name = this.GetString("name", "");
+	message.Mode = this.GetString("mode", "");
 	message.Durable, _ = this.GetBool("durable");
 	message.IsNeedToken, _ = this.GetBool("is_need_token");
 	message.Token = this.GetString("token");
@@ -102,8 +102,8 @@ func (this *MessageController) Modify()  {
 //删除消息
 func (this *MessageController) Delete() {
 
-	nodeId, _ := this.GetInt("node_id");
-	messageName := this.GetString("message");
+	nodeId, _ := this.GetInt("node_id", 0);
+	messageName := this.GetString("message", "");
 
 	res, err := models.DeleteMessage(nodeId, messageName);
 	if(!res) {
@@ -116,7 +116,7 @@ func (this *MessageController) Delete() {
 //测试发送
 func (this *MessageController) Test() {
 
-	nodeId, _ := this.GetInt("node_id");
+	nodeId, _ := this.GetInt("node_id", 0);
 
 	messages := models.GetMessagesByNodeId(nodeId)
 
@@ -129,10 +129,10 @@ func (this *MessageController) Test() {
 //发送数据
 func (this *MessageController) Send() {
 
-	nodeId, _ := this.GetInt("node_id");
-	message := this.GetString("message");
-	data := this.GetString("data");
-	routeKey := this.GetString("route_key");
+	nodeId, _ := this.GetInt("node_id", 0);
+	message := this.GetString("message", "");
+	data := this.GetString("data", "");
+	routeKey := this.GetString("route_key", "");
 
 	res, err := models.PublishMessage(nodeId, message, data, routeKey);
 	if(!res) {

@@ -11,10 +11,7 @@ type ConsumerController struct {
 //消费列表
 func (this *ConsumerController) List()  {
 
-	nodeId, _ := this.GetInt("node_id");
-	if(nodeId == 0) {
-		nodeId = 1;
-	}
+	nodeId, _ := this.GetInt("node_id", 1);
 
 	messages := models.GetMessagesByNodeId(nodeId)
 
@@ -29,7 +26,7 @@ func (this *ConsumerController) List()  {
 //添加消费者
 func (this *ConsumerController) Add() {
 
-	nodeId, _ := this.GetInt("node_id");
+	nodeId, _ := this.GetInt("node_id", 0);
 
 	messages := models.GetMessagesByNodeId(nodeId);
 
@@ -44,12 +41,12 @@ func (this *ConsumerController) Save() {
 
 	var consumer = new(models.Consumer);
 
-	nodeId, _ := this.GetInt("node_id");
-	messageName := this.GetString("message");
-	consumer.URL = this.GetString("url");
-	consumer.RouteKey = this.GetString("route_key");
-	consumer.Timeout, _ = this.GetFloat("timeout");
-	consumer.Comment = this.GetString("comment");
+	nodeId, _ := this.GetInt("node_id", 0);
+	messageName := this.GetString("message", "");
+	consumer.URL = this.GetString("url", "");
+	consumer.RouteKey = this.GetString("route_key", "");
+	consumer.Timeout, _ = this.GetFloat("timeout", 5000);
+	consumer.Comment = this.GetString("comment", "");
 
 	res, err := models.AddConsumer(nodeId, messageName, consumer);
 	if(!res) {
@@ -62,9 +59,9 @@ func (this *ConsumerController) Save() {
 //修改消费者
 func (this *ConsumerController) Edit() {
 
-	nodeId, _ := this.GetInt("node_id");
-	messageName := this.GetString("message");
-	consumerId := this.GetString("consumer_id");
+	nodeId, _ := this.GetInt("node_id", 0);
+	messageName := this.GetString("message", "");
+	consumerId := this.GetString("consumer_id", "");
 
 	messages := models.GetMessagesByNodeId(nodeId);
 
@@ -93,13 +90,13 @@ func (this *ConsumerController) Modify() {
 
 	var consumer = new(models.Consumer);
 
-	nodeId, _ := this.GetInt("node_id");
-	messageName := this.GetString("message");
-	consumer.URL = this.GetString("url");
-	consumer.RouteKey = this.GetString("route_key");
+	nodeId, _ := this.GetInt("node_id", 0);
+	messageName := this.GetString("message", "");
+	consumer.URL = this.GetString("url", "");
+	consumer.RouteKey = this.GetString("route_key", "");
 	consumer.Timeout, _ = this.GetFloat("timeout");
-	consumer.Comment = this.GetString("comment");
-	consumer.ID = this.GetString("consumer_id");
+	consumer.Comment = this.GetString("comment", "");
+	consumer.ID = this.GetString("consumer_id", "");
 
 	res, err := models.UpdateConsumer(nodeId, messageName, consumer);
 	if(!res) {
@@ -112,9 +109,9 @@ func (this *ConsumerController) Modify() {
 //删除消费者
 func (this *ConsumerController) Delete() {
 
-	nodeId, _ := this.GetInt("node_id");
-	messageName := this.GetString("message");
-	consumerId := this.GetString("consumer_id");
+	nodeId, _ := this.GetInt("node_id", 0);
+	messageName := this.GetString("message", "");
+	consumerId := this.GetString("consumer_id", "");
 
 	res, err := models.DeleteConsumer(nodeId, messageName, consumerId);
 	if(!res) {
@@ -127,7 +124,7 @@ func (this *ConsumerController) Delete() {
 //获取消费者状态
 func (this *ConsumerController) Status() {
 
-	nodeId, _ := this.GetInt("node_id");
+	nodeId, _ := this.GetInt("node_id", 0);
 
 	results, err := models.ConsumerStatus(nodeId);
 	if(err != nil) {

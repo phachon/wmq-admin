@@ -37,3 +37,13 @@ CREATE TABLE `wmq_node` (
   `update_time` integer unsigned NOT NULL DEFAULT '0'
 );
 
+-- -------------------------------------------
+-- wmq notice table 公告表
+-- -------------------------------------------
+DROP TABLE IF EXISTS `wmq_notice`;
+CREATE TABLE `wmq_notice` (
+  `notoce_id` integer PRIMARY KEY AUTOINCREMENT,
+  `message` text DEFAULT '',
+  `create_time` integer unsigned NOT NULL DEFAULT '0'
+);
+
