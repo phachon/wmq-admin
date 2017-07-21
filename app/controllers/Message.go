@@ -20,7 +20,7 @@ func (this *MessageController) List() {
 
 	nodes := models.GetNodes();
 	this.Data["nodes"] = nodes;
-	//this.Data["selectNode"] = selectNode;
+	this.Data["node_id"] = nodeId;
 	this.Data["messages"] = messages;
 	this.display("message/list");
 }
@@ -31,5 +31,48 @@ func (this *MessageController) Add()  {
 	nodes := models.GetNodes();
 	this.Data["nodes"] = nodes;
 	this.display("message/form");
+}
+
+//修改消息
+func (this *MessageController) Edit() {
+
+	nodeId, _ := this.GetInt("node_id");
+	messageName := this.GetString("message");
+
+	messages := models.GetMessagesByNodeId(nodeId);
+
+	var messageValue models.Message;
+	for _, message := range messages {
+		if(message.Name != messageName) {
+			continue;
+		}
+		messageValue = message;
+	}
+
+	this.layoutHtml = "layout/template";
+	this.Data["node_id"] = nodeId;
+	this.Data["message"] = messageValue;
+	this.display("message/edit");
+}
+
+//修改保存
+func (this *MessageController) Modify()  {
+
+	message := new(models.Message)
+
+	nodeId, _ := this.GetInt("node_id");
+	message.Name = this.GetString("name");
+	message.Mode = this.GetString("mode");
+	message.Durable, _ = this.GetBool("durable");
+	message.IsNeedToken, _ = this.GetBool("is_need_token");
+	message.Token = this.GetString("token");
+	message.Comment = this.GetString("comment");
+
+	res, err := models.UpdateMessage(nodeId, message);
+	if(!res) {
+		this.jsonError(err.Error(), "");
+	}
+
+	this.jsonSuccess("修改消息成功", "/message/list");
 }
 

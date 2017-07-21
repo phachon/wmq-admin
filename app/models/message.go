@@ -98,14 +98,28 @@ func AddMessageByNodeId(nodeId int, message *Message) (bool) {
 }
 
 //更新一条 message
-func UpdateMessage(nodeId int, message *Message) bool {
+func UpdateMessage(nodeId int, message *Message) (bool, error) {
+
+	if(nodeId == 0) {
+		return false, fmt.Errorf("%s", "node_id error!");
+	}
+	if(message.Name == "") {
+		return false, fmt.Errorf("%s", "消息名称不能为空!");
+	}
+	if(message.Mode == "") {
+		return false, fmt.Errorf("%s", "没有选择消息模式!");
+	}
+	if(message.IsNeedToken) {
+		if(message.Token == "") {
+			return false, fmt.Errorf("%s", "没有填写token!");
+		}
+	}
 
 	selectNode := GetNodeByNodeId(nodeId)[0];
 	ip := selectNode.Ip;
 	managerPort := selectNode.ManagerPort;
 	token := selectNode.Token;
 	nodeUrl := "http://" + ip + ":" + strconv.Itoa(managerPort) + UPDATE_MESSAGE_PATH + "?api-token=" + token;
-	fmt.Println(nodeUrl)
 
 	convert := new(common.Convert)
 	durable := convert.IntToTenString(convert.BoolToInt(message.Durable));
@@ -117,17 +131,18 @@ func UpdateMessage(nodeId int, message *Message) bool {
 		"&IsNeedToken=" + isNeedToken +
 		"&Mode=" + message.Mode +
 		"&Token=" + message.Token;
+	fmt.Println(nodeUrl);
 
 	var res Response;
 	response, _ := httplib.Get(nodeUrl).String();
 	json.Unmarshal([]byte(response), &res);
 	code := res.Code;
 
-	if (code == 1) {
-		return true
-	}else {
-		return false
+	if (code != 1) {
+		return false, fmt.Errorf("%s", "接口调用失败!");
 	}
+
+	return true, fmt.Errorf("%s", "");
 }
 
 // 删除一条 message
@@ -154,7 +169,22 @@ func DeletMessage(nodeId int, name string) bool {
 }
 
 // 添加一条 consumer
-func AddConsumer(nodeId int, message string, consumer *Consumer) bool {
+func AddConsumer(nodeId int, message string, consumer *Consumer) (bool, error) {
+
+	if(message == "") {
+		return false, fmt.Errorf("%s", "没有选择消息!");
+	}
+	if(consumer.URL == "") {
+		return false, fmt.Errorf("%s", "消费地址不能为空!");
+	}
+	if(consumer.Timeout == 0) {
+		return false, fmt.Errorf("%s", "超时时间不能为空!");
+	}
+	if(consumer.RouteKey == "") {
+		return false, fmt.Errorf("%s", "RouteKey 不能为空!");
+	}
+	consumer.Code = float64(200)
+	consumer.CheckCode = false;
 
 	selectNode := GetNodeByNodeId(nodeId)[0];
 	ip := selectNode.Ip;
@@ -167,8 +197,8 @@ func AddConsumer(nodeId int, message string, consumer *Consumer) bool {
 
 	nodeUrl += "&Name=" + message +
 		"&URL=" + consumer.URL +
-		"&Timeout=" + convert.FloatToString(consumer.Timeout, 'b', 5, 64) +
-		"&Code=" + convert.FloatToString(consumer.Code, 'b', 5, 64) +
+		"&Timeout=" + convert.FloatToString(consumer.Timeout, 'f', 0, 64) +
+		"&Code=" + convert.FloatToString(consumer.Code, 'f', 0, 64) +
 		"&CheckCode=" + convert.IntToTenString(convert.BoolToInt(consumer.CheckCode)) +
 		"&Comment=" + consumer.Comment +
 		"&RouteKey=" + consumer.RouteKey;
@@ -178,44 +208,58 @@ func AddConsumer(nodeId int, message string, consumer *Consumer) bool {
 	json.Unmarshal([]byte(response), &res);
 	code := res.Code;
 
-	if (code == 1) {
-		return true
-	}else {
-		return false
+	if (code != 1) {
+		return false, fmt.Errorf("%s", "调用接口失败!");
 	}
+
+	return true, fmt.Errorf("%s", "");
 }
 
-// 添加一条 consumer
-func UpdateConsumer(nodeId int, message string, consumer *Consumer) bool {
+// 修改一条 consumer
+func UpdateConsumer(nodeId int, message string, consumer *Consumer) (bool, error) {
+
+	if(message == "") {
+		return false, fmt.Errorf("%s", "没有选择消息!");
+	}
+	if(consumer.URL == "") {
+		return false, fmt.Errorf("%s", "消费地址不能为空!");
+	}
+	if(consumer.Timeout == 0) {
+		return false, fmt.Errorf("%s", "超时时间不能为空!");
+	}
+	if(consumer.RouteKey == "") {
+		return false, fmt.Errorf("%s", "RouteKey 不能为空!");
+	}
+	consumer.Code = float64(200)
+	consumer.CheckCode = false;
 
 	selectNode := GetNodeByNodeId(nodeId)[0];
 	ip := selectNode.Ip;
 	managerPort := selectNode.ManagerPort;
 	token := selectNode.Token;
 	nodeUrl := "http://" + ip + ":" + strconv.Itoa(managerPort) + UPDATE_CONSUMER_PATH + "?api-token=" + token;
-	fmt.Println(nodeUrl)
-
 	convert := new(common.Convert);
 
 	nodeUrl += "&Name=" + message +
 		"&ID=" + consumer.ID +
 		"&URL=" + consumer.URL +
-		"&Timeout=" + convert.FloatToString(consumer.Timeout, 'b', 5, 64) +
-		"&Code=" + convert.FloatToString(consumer.Code, 'b', 5, 64) +
+		"&Timeout=" + convert.FloatToString(consumer.Timeout, 'f', 0, 64) +
+		"&Code=" + convert.FloatToString(consumer.Code, 'f', 0, 64) +
 		"&CheckCode=" + convert.IntToTenString(convert.BoolToInt(consumer.CheckCode)) +
 		"&Comment=" + consumer.Comment +
 		"&RouteKey=" + consumer.RouteKey;
+	fmt.Println(nodeUrl);
 
 	var res Response;
 	response, _ := httplib.Get(nodeUrl).String();
 	json.Unmarshal([]byte(response), &res);
 	code := res.Code;
 
-	if (code == 1) {
-		return true
-	}else {
-		return false
+	if (code != 1) {
+		return false, fmt.Errorf("%s", "接口调用失败!")
 	}
+
+	return true, fmt.Errorf("%s", "");
 }
 
 //删除一条 consumer
@@ -240,7 +284,6 @@ func DeleteConsumer(nodeId int, message string, consumerId string) bool {
 	}else {
 		return false
 	}
-
 }
 
 func RestartService(nodeId int) {

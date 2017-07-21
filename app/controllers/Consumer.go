@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"wmq-admin/app/models"
-	"fmt"
 )
 
 type ConsumerController struct {
@@ -39,6 +38,8 @@ func (this *ConsumerController) Edit() {
 	consumerId := this.GetString("consumer_id");
 
 	messages := models.GetMessagesByNodeId(nodeId);
+
+	var consumerValue models.Consumer;
 	for _, message := range messages {
 		if(message.Name != messageName) {
 			continue;
@@ -47,11 +48,35 @@ func (this *ConsumerController) Edit() {
 			if(consumer.ID != consumerId) {
 				continue;
 			}
-			fmt.Println(consumer)
+			consumerValue = consumer;
 		}
 	}
 
-
 	this.layoutHtml = "layout/template";
+	this.Data["consumer"] = consumerValue;
+	this.Data["node_id"] = nodeId;
+	this.Data["selectMessage"] = messageName;
+	this.Data["messages"] = messages;
 	this.display("consumer/edit");
+}
+
+//修改保存
+func (this *ConsumerController) Modify() {
+
+	var consumer = new(models.Consumer);
+
+	nodeId, _ := this.GetInt("node_id");
+	messageName := this.GetString("message");
+	consumer.URL = this.GetString("url");
+	consumer.RouteKey = this.GetString("route_key");
+	consumer.Timeout, _ = this.GetFloat("timeout");
+	consumer.Comment = this.GetString("comment");
+	consumer.ID = this.GetString("consumer_id");
+
+	res, err := models.UpdateConsumer(nodeId, messageName, consumer);
+	if(!res) {
+		this.jsonError(err.Error(), "");
+	}
+
+	this.jsonSuccess("修改消费者成功!", "/consumer/list");
 }

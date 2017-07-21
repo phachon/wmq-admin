@@ -15,7 +15,7 @@
                                 <span class="input-group-addon">选择节点</span>
                                 <select class="form-control" onchange="Message.node(this)">
                                     {{range $node := .nodes}}
-                                    <option value="{{$node.Id}}">{{$node.Ip}}:{{$node.MessagePort}}</option>
+                                    <option value="{{$node.Id}}" {{if eq $node.Id $.node_id}} selected {{end}}>{{$node.Ip}}:{{$node.MessagePort}}</option>
                                     {{end}}
                                 </select>
                             </div>
@@ -57,17 +57,11 @@
                             <td class="center">{{$message.Token}}</td>
                             <td class="center">{{$message.Comment}}</td>
                             <td class="center">
-                                <a data-link="" name="consumer"><i class="glyphicon glyphicon-list-alt"></i> 消费者</a>
-                                <a data-link="message_edit.html" name="edit"><i class="glyphicon glyphicon-pencil"></i> 修改</a>
+                                <!--<a data-link="" name="consumer"><i class="glyphicon glyphicon-list-alt"></i> 消费者</a>-->
+                                <a data-link="/message/edit?node_id={{$.node_id}}&message={{$message.Name}}" name="edit"><i class="glyphicon glyphicon-pencil"></i> 修改</a>
                                 <a onclick="Common.confirm('确定要删除吗？')"><i class="glyphicon glyphicon-remove"></i> 删除</a>
                             </td>
                         </tr>
-                        <script type="text/javascript">
-                            var consumers = [];
-                            {{range $consumer := $message.Consumers}}
-                                consumers.push("{'id': '{{$consumer.ID}}','url':'{{$consumer.URL}}', 'route_key': '{{$consumer.RouteKey}}', 'timeout':'{{$consumer.Timeout}}', 'code': '{{$consumer.Code}}', 'check_code': '{{$consumer.CheckCode}}', 'Comment':'{{$consumer.Comment}}'}");
-                            {{end}}
-                        </script>
                         {{end}}
                         </tbody>
                     </table>
@@ -79,5 +73,4 @@
 <script src="/static/js/modules/message.js"></script>
 <script type="text/javascript">
     Message.bindFancyBox();
-    Message.consumer(consumers);
 </script>
