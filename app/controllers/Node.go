@@ -72,7 +72,7 @@ func (this *NodeController) Modify() {
 	Node.Comment = strings.TrimSpace(this.GetString("comment"));
 	Node.UpdateTime = time.Now().Unix();
 
-	nodeId, err := models.UpdateNode(Node);
+	nodeId, err := models.UpdateNode(Node, "node_id", "ip", "manager_port", "message_port", "comment", "update_time");
 	if(nodeId == 0 || err != nil) {
 		this.jsonError(err.Error(), "");
 	}

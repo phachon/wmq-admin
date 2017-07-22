@@ -45,7 +45,7 @@
                             <td>{{$node.MessagePort}}</td>
                             <td class="center">{{$node.Token}}</td>
                             <td class="center">{{$node.Comment}}</td>
-                            <td class="center">{{$node.CreateTime}}</td>
+                            <td class="center">{{dateFormat $node.CreateTime "Y-m-d H:i:s" }}</td>
                             <td class="center">
                                 <a name="edit" data-link="/node/edit?node_id={{$node.Id}}"><i class="glyphicon glyphicon-pencil"> </i>修改</a>
                                 <a name="delete" onclick='Common.confirm("确认要删除吗?", "/node/delete?node_id={{$node.Id}}")'><i class="glyphicon glyphicon-remove"></i>删除</a>
