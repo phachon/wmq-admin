@@ -42,7 +42,8 @@ CREATE TABLE `wmq_node` (
 -- -------------------------------------------
 DROP TABLE IF EXISTS `wmq_notice`;
 CREATE TABLE `wmq_notice` (
-  `notoce_id` integer PRIMARY KEY AUTOINCREMENT,
+  `notice_id` integer PRIMARY KEY AUTOINCREMENT,
+  `user_name` varchar(20) NOT NULL DEFAULT '',
   `message` text DEFAULT '',
   `create_time` integer unsigned NOT NULL DEFAULT '0'
 );

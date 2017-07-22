@@ -20,57 +20,23 @@
                 <div class="panel-heading">系统公告板</div>
                 <div class="panel-body">
                     <div class="col-md-7">
-                        <div class="media well">
-                            <div class="media-left">
-                                <a href="#">
-                                    <img class="media-object wh64" src="/static/images/a.png" alt="卓大哥">
-                                </a>
-                            </div>
-                            <div class="media-body">
-                                <h4 class="media-heading">卓大哥</h4>
-                                技术大哥，今晚请把网站程序升级一下哈，现在的系统有漏洞，安全起见！
-                            </div>
+                        {{ range $notice := .notices }}
+                        <div class="alert alert-info alert-dismissible fade in" role="alert" style="padding: 10px 10px;margin-bottom: 10px;">
+                            <p>
+                                <span class="glyphicon glyphicon-volume-up" aria-hidden="true"></span>
+                                <strong>{{$notice.UserName}}：</strong>
+                                {{$notice.Message}}&nbsp;&nbsp; —— {{dateFormat $notice.CreateTime "Y-m-d H:i:s" }}
+                            </p>
                         </div>
-                        <div class="media well">
-                            <div class="media-body text-right">
-                                <h4 class="media-heading">技术大哥</h4>
-                                收到，今晚凌晨2点准时升级！
-                            </div>
-                            <div class="media-right">
-                                <a href="#">
-                                    <img class="media-object wh64" src="/static/images/b.png" alt="技术大哥">
-                                </a>
-                            </div>
-                        </div>
-                        <div class="media well">
-                            <div class="media-body text-right">
-                                <h4 class="media-heading">技术大哥</h4>
-                                你先在站点发布一下通知哈！
-                            </div>
-                            <div class="media-right">
-                                <a href="#">
-                                    <img class="media-object wh64" src="/static/images/b.png" alt="技术大哥">
-                                </a>
-                            </div>
-                        </div>
-                        <div class="media well">
-                            <div class="media-left">
-                                <a href="#">
-                                    <img class="media-object wh64" src="/static/images/a.png" alt="卓大哥">
-                                </a>
-                            </div>
-                            <div class="media-body">
-                                <h4 class="media-heading">卓大哥</h4>
-                                好嘞。
-                            </div>
-                        </div>
+                        {{end}}
                     </div>
                     <div class="col-md-5">
-                        <form action="#">
+                        <form action="/notice/save" method="post" onsubmit="return false">
                             <div class="form-group">
                                 <label for="text1">输入公告内容</label>
-                                <textarea class="form-control" id="text1" rows="5" cols="10" placeholder="输入公告内容"></textarea>
-                                <button type="submit" class="btn btn-default mar_t15">留言</button>
+                                <input type="hidden" name="user_name" value="root"/>
+                                <textarea class="form-control" id="text1" name="message" rows="5" cols="10" placeholder="输入公告内容"></textarea>
+                                <button type="button" name="submit" onclick="Form.ajaxSubmit(this.form, false);" class="btn btn-default mar_t15">发布</button>
                             </div>
                         </form>
                         <div class="panel panel-default">

@@ -17,7 +17,7 @@ func Init() {
 		sqliteConn();
 	}
 
-	orm.RegisterModel(new(User), new(Node))
+	orm.RegisterModel(new(User), new(Node), new(Notice));
 
 	if beego.AppConfig.String("runmode") == "development" {
 		orm.Debug = true

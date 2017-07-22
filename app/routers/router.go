@@ -16,4 +16,5 @@ func init() {
     beego.AutoRouter(&controllers.ConsumerController{})
     beego.AutoRouter(&controllers.LogController{})
     beego.AutoRouter(&controllers.ProfileController{})
+    beego.AutoRouter(&controllers.NoticeController{})
 }
