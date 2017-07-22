@@ -34,7 +34,7 @@
                         <form action="/notice/save" method="post" onsubmit="return false">
                             <div class="form-group">
                                 <label for="text1">输入公告内容</label>
-                                <input type="hidden" name="user_name" value="root"/>
+                                <input type="hidden" name="user_name" value="{{.userName}}"/>
                                 <textarea class="form-control" id="text1" name="message" rows="5" cols="10" placeholder="输入公告内容"></textarea>
                                 <button type="button" name="submit" onclick="Form.ajaxSubmit(this.form, false);" class="btn btn-default mar_t15">发布</button>
                             </div>

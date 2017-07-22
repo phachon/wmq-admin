@@ -15,6 +15,7 @@ type TemplateController struct {
 	layoutHtml string
 	tplHtml string
 	jsonValue
+	userName string
 }
 
 type jsonValue struct {
@@ -48,7 +49,7 @@ func (this *TemplateController) Prepare() {
 
 //验证登录
 func (this *TemplateController) isLogin() bool {
-	return true;
+
 	//忽略 /author /error
 	if(this.controllerName == "author" || this.controllerName == "error") {
 		return true;
@@ -84,6 +85,7 @@ func (this *TemplateController) isLogin() bool {
 		return false
 	}
 
+	this.userName = name;
 	//success
 	return true;
 }
@@ -100,6 +102,7 @@ func (this *TemplateController) display(tpl string) {
 	}
 	this.Layout = this.layoutHtml + viewPostfix;
 	this.Data["navName"] = this.controllerName;
+	this.Data["userName"] = this.userName;
 	this.TplName = tpl + viewPostfix;
 }
 
