@@ -32,7 +32,7 @@ var Message = {
         $('button[name="test_message"]').each(function () {
             $(this).fancybox({
                 minWidth: 500,
-                minHeight: 400,
+                minHeight: 420,
                 width: '65%',
                 height: '50%',
                 autoSize: false,

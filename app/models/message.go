@@ -222,8 +222,11 @@ func AddConsumer(nodeId int, message string, consumer *Consumer) (bool, error) {
 	if(consumer.RouteKey == "") {
 		return false, fmt.Errorf("%s", "RouteKey 不能为空!");
 	}
-	consumer.Code = float64(200)
-	consumer.CheckCode = false;
+	if(consumer.CheckCode) {
+		if(consumer.Code == 0) {
+			return false, fmt.Errorf("%s", "检查code码不能为空!");
+		}
+	}
 
 	selectNode := GetNodeByNodeId(nodeId)[0];
 	ip := selectNode.Ip;
@@ -269,8 +272,11 @@ func UpdateConsumer(nodeId int, message string, consumer *Consumer) (bool, error
 	if(consumer.RouteKey == "") {
 		return false, fmt.Errorf("%s", "RouteKey 不能为空!");
 	}
-	consumer.Code = float64(200)
-	consumer.CheckCode = false;
+	if(consumer.CheckCode) {
+		if(consumer.Code == 0) {
+			return false, fmt.Errorf("%s", "检查code码不能为空!");
+		}
+	}
 
 	selectNode := GetNodeByNodeId(nodeId)[0];
 	ip := selectNode.Ip;

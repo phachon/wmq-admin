@@ -45,6 +45,8 @@ func (this *ConsumerController) Save() {
 	messageName := this.GetString("message", "");
 	consumer.URL = this.GetString("url", "");
 	consumer.RouteKey = this.GetString("route_key", "");
+	consumer.CheckCode, _ = this.GetBool("check_code", true);
+	consumer.Code, _ = this.GetFloat("code", 200);
 	consumer.Timeout, _ = this.GetFloat("timeout", 5000);
 	consumer.Comment = this.GetString("comment", "");
 
@@ -94,6 +96,8 @@ func (this *ConsumerController) Modify() {
 	messageName := this.GetString("message", "");
 	consumer.URL = this.GetString("url", "");
 	consumer.RouteKey = this.GetString("route_key", "");
+	consumer.CheckCode, _ = this.GetBool("check_code", true);
+	consumer.Code, _ = this.GetFloat("code", 200);
 	consumer.Timeout, _ = this.GetFloat("timeout");
 	consumer.Comment = this.GetString("comment", "");
 	consumer.ID = this.GetString("consumer_id", "");

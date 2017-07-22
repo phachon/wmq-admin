@@ -31,6 +31,25 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label class="col-sm-2 control-label"><span class="text-danger"> * </span>检查httpCode</label>
+                        <div class="col-sm-4">
+                            <label class="radio-inline">
+                                <input type="radio" name="check_code" value="1" {{if eq .consumer.CheckCode true}} checked="checked" {{end}}>
+                                是
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="check_code" value="0" {{if eq .consumer.CheckCode false}} checked="checked" {{end}}>
+                                否
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label"><span class="text-danger"> * </span>httpCode</label>
+                        <div class="col-sm-6">
+                            <input type="text" name="code" class="form-control" placeholder="如果需要检查httpCode, 请输入code码，默认是200，否，不输入" value="{{.consumer.Code}}" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label class="col-sm-2 control-label">备注</label>
                         <div class="col-sm-6">
                             <input type="text" name="comment" class="form-control" placeholder="备注" value="{{.consumer.Comment}}">

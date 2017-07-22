@@ -9,9 +9,9 @@ var Consumer = {
             
             $(this).fancybox({
                 minWidth: 500,
-                minHeight: 400,
+                minHeight: 480,
                 width: '65%',
-                height: '50%',
+                height: '57%',
                 autoSize: false,
                 type: 'iframe',
                 href: $(this).attr('data-link')
@@ -21,9 +21,9 @@ var Consumer = {
         $('button[name="add_consumer"]').each(function () {
             $(this).fancybox({
                 minWidth: 500,
-                minHeight: 400,
+                minHeight: 480,
                 width: '65%',
-                height: '50%',
+                height: '57%',
                 autoSize: false,
                 type: 'iframe',
                 href: $(this).attr('data-link')

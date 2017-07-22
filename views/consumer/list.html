@@ -55,12 +55,8 @@
                                     <tr id="consumer_{{$consumer.ID}}" style="border:none;">
                                         <td>{{$consumer.URL}}</td>
                                         <td class="w80">{{$consumer.RouteKey}}</td>
-                                        <td class="w90 consumer_status">
-                                            {{if eq $consumer.CheckCode true}}
-                                            <label class="text-success">running(0)</label>
-                                            {{else}}
-                                            <label class="text-danger">stoped</label>
-                                            {{end}}
+                                        <td class="center w90 consumer_status">
+                                            <label class="text-info">waiting</label>
                                         </td>
                                         <td class="w60">{{$consumer.Timeout}}</td>
                                         <td class="w200">{{$consumer.Comment}}</td>
@@ -86,6 +82,7 @@
 <script src="/static/js/modules/consumer.js"></script>
 <script type="text/javascript">
     Consumer.bindFancyBox();
+    Consumer.status();
     setInterval(function(){
         Consumer.status();
     },10000);
