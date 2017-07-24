@@ -11,10 +11,7 @@ type MessageController struct {
 //消息列表
 func (this *MessageController) List() {
 
-	nodeId, _ := this.GetInt("node_id");
-	if(nodeId == 0) {
-		nodeId = 1;
-	}
+	nodeId, _ := this.GetInt("node_id", 1);
 
 	messages := models.GetMessagesByNodeId(nodeId);
 

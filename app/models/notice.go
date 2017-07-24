@@ -29,10 +29,10 @@ func GetNotices() ([]*Notice) {
 //插入一条用户信息
 func InsertNotice(notice *Notice) (int64, error) {
 	if(notice.Message == "") {
-		return 0, fmt.Errorf("%s", "用户名不能为空!");
+		return 0, fmt.Errorf("%s", "公告信息不能为空!");
 	}
 	if(notice.UserName == "") {
-		return 0, fmt.Errorf("%s", "user_name error!");
+		return 0, fmt.Errorf("%s", "没有登录!");
 	}
 
 	notice.CreateTime = time.Now().Unix();

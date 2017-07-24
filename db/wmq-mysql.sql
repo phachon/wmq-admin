@@ -21,8 +21,8 @@ CREATE TABLE `wmq_user` (
   UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO `wmq_user` (`name`, `email`, `password`,  `mobile`, `status`, `create_time`, `update_time`)
-VALUES ('root', 'root@123456.com', 'e10adc3949ba59abbe56e057f20f883e', '1102222', '0', '1460557068', '1461407549');
+INSERT INTO `wmq_user` (`name`, `email`, `password`,  `mobile`, `is_delete`, `create_time`, `update_time`)
+VALUES ('root', 'root@123456.com', 'e10adc3949ba59abbe56e057f20f883e', '1102222', '0', '1500825600', '1500825600');
 
 -- -------------------------------------------
 -- wmq node table 节点表
@@ -40,3 +40,18 @@ CREATE TABLE `wmq_node` (
   `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
   PRIMARY KEY (`node_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- -------------------------------------------
+-- wmq notice table 公告表
+-- -------------------------------------------
+DROP TABLE IF EXISTS `wmq_notice`;
+CREATE TABLE `wmq_notice` (
+  `notice_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `user_name` varchar(20) NOT NULL DEFAULT '' COMMENT '用户名',
+  `message` text DEFAULT '' COMMENT '公告消息',
+  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+  PRIMARY KEY (`notice_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `wmq_notice` (`user_name`, `message`, `create_time`)
+VALUES ('root', '欢迎使用Wmq-Admin V1.0', '1500825600');

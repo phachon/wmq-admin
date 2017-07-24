@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"wmq-admin/app/common"
 	"strconv"
+	"net/url"
 )
 
 const (
@@ -66,7 +67,7 @@ func GetMessagesByNodeId(nodeId int) ([]Message) {
 	selectNode := GetNodeByNodeId(nodeId)[0];
 	ip := selectNode.Ip;
 	managerPort := selectNode.ManagerPort;
-	token := selectNode.Token;
+	token := url.QueryEscape(selectNode.Token);
 	nodeUrl := "http://" + ip + ":" + strconv.Itoa(managerPort) + MESSAGE_CONFIG_PATH +"?api-token=" + token;
 	fmt.Println(nodeUrl)
 
@@ -103,7 +104,7 @@ func AddMessageByNodeId(nodeId int, message *Message) (bool, error) {
 	selectNode := GetNodeByNodeId(nodeId)[0];
 	ip := selectNode.Ip;
 	managerPort := selectNode.ManagerPort;
-	token := selectNode.Token;
+	token := url.QueryEscape(selectNode.Token);
 	nodeUrl := "http://" + ip + ":" + strconv.Itoa(managerPort) + ADD_MESSAGE_PATH +"?api-token=" + token;
 	fmt.Println(nodeUrl)
 
@@ -112,11 +113,11 @@ func AddMessageByNodeId(nodeId int, message *Message) (bool, error) {
 	isNeedToken := convert.IntToTenString(convert.BoolToInt(message.IsNeedToken));
 
 	nodeUrl += "&Name=" + message.Name +
-		"&Comment=" + message.Comment +
+		"&Comment=" + url.QueryEscape(message.Comment) +
 		"&Durable=" + durable +
 		"&IsNeedToken=" + isNeedToken +
 		"&Mode=" + message.Mode +
-		"&Token=" + message.Token;
+		"&Token=" + url.QueryEscape(message.Token);
 
 	var res Response;
 	response, _ := httplib.Get(nodeUrl).String();
@@ -150,7 +151,7 @@ func UpdateMessage(nodeId int, message *Message) (bool, error) {
 	selectNode := GetNodeByNodeId(nodeId)[0];
 	ip := selectNode.Ip;
 	managerPort := selectNode.ManagerPort;
-	token := selectNode.Token;
+	token := url.QueryEscape(selectNode.Token);
 	nodeUrl := "http://" + ip + ":" + strconv.Itoa(managerPort) + UPDATE_MESSAGE_PATH + "?api-token=" + token;
 
 	convert := new(common.Convert)
@@ -158,11 +159,11 @@ func UpdateMessage(nodeId int, message *Message) (bool, error) {
 	isNeedToken := convert.IntToTenString(convert.BoolToInt(message.IsNeedToken));
 
 	nodeUrl += "&Name=" + message.Name +
-		"&Comment=" + message.Comment +
+		"&Comment=" + url.QueryEscape(message.Comment) +
 		"&Durable=" + durable +
 		"&IsNeedToken=" + isNeedToken +
 		"&Mode=" + message.Mode +
-		"&Token=" + message.Token;
+		"&Token=" + url.QueryEscape(message.Token);
 	fmt.Println(nodeUrl);
 
 	var res Response;
@@ -190,7 +191,7 @@ func DeleteMessage(nodeId int, name string) (bool, error) {
 	selectNode := GetNodeByNodeId(nodeId)[0];
 	ip := selectNode.Ip;
 	managerPort := selectNode.ManagerPort;
-	token := selectNode.Token;
+	token := url.QueryEscape(selectNode.Token);
 	nodeUrl := "http://" + ip + ":" + strconv.Itoa(managerPort) + DELETE_MESSAGE_PATH + "?api-token=" + token;
 	fmt.Println(nodeUrl)
 
@@ -231,18 +232,18 @@ func AddConsumer(nodeId int, message string, consumer *Consumer) (bool, error) {
 	selectNode := GetNodeByNodeId(nodeId)[0];
 	ip := selectNode.Ip;
 	managerPort := selectNode.ManagerPort;
-	token := selectNode.Token;
+	token := url.QueryEscape(selectNode.Token);
 	nodeUrl := "http://" + ip + ":" + strconv.Itoa(managerPort) + ADD_CONSUMER_PATH + "?api-token=" + token;
 
 	convert := new(common.Convert);
 
 	nodeUrl += "&Name=" + message +
-		"&URL=" + consumer.URL +
+		"&URL=" + url.QueryEscape(consumer.URL) +
 		"&Timeout=" + convert.FloatToString(consumer.Timeout, 'f', 0, 64) +
 		"&Code=" + convert.FloatToString(consumer.Code, 'f', 0, 64) +
 		"&CheckCode=" + convert.IntToTenString(convert.BoolToInt(consumer.CheckCode)) +
-		"&Comment=" + consumer.Comment +
-		"&RouteKey=" + consumer.RouteKey;
+		"&Comment=" + url.QueryEscape(consumer.Comment) +
+		"&RouteKey=" + url.QueryEscape(consumer.RouteKey);
 	fmt.Println(nodeUrl);
 
 	var res Response;
@@ -281,18 +282,18 @@ func UpdateConsumer(nodeId int, message string, consumer *Consumer) (bool, error
 	selectNode := GetNodeByNodeId(nodeId)[0];
 	ip := selectNode.Ip;
 	managerPort := selectNode.ManagerPort;
-	token := selectNode.Token;
+	token := url.QueryEscape(selectNode.Token);
 	nodeUrl := "http://" + ip + ":" + strconv.Itoa(managerPort) + UPDATE_CONSUMER_PATH + "?api-token=" + token;
 	convert := new(common.Convert);
 
 	nodeUrl += "&Name=" + message +
 		"&ID=" + consumer.ID +
-		"&URL=" + consumer.URL +
+		"&URL=" + url.QueryEscape(consumer.URL) +
 		"&Timeout=" + convert.FloatToString(consumer.Timeout, 'f', 0, 64) +
 		"&Code=" + convert.FloatToString(consumer.Code, 'f', 0, 64) +
 		"&CheckCode=" + convert.IntToTenString(convert.BoolToInt(consumer.CheckCode)) +
-		"&Comment=" + consumer.Comment +
-		"&RouteKey=" + consumer.RouteKey;
+		"&Comment=" + url.QueryEscape(consumer.Comment) +
+		"&RouteKey=" + url.QueryEscape(consumer.RouteKey);
 	fmt.Println(nodeUrl);
 
 	var res Response;
@@ -301,7 +302,7 @@ func UpdateConsumer(nodeId int, message string, consumer *Consumer) (bool, error
 	code := res.Code;
 
 	if (code != 1) {
-		return false, fmt.Errorf("%s", "接口调用失败!")
+		return false, fmt.Errorf("%s", "接口调用失败:" + res.Data)
 	}
 
 	return true, fmt.Errorf("%s", "");
@@ -323,7 +324,7 @@ func DeleteConsumer(nodeId int, message string, consumerId string) (bool, error)
 	selectNode := GetNodeByNodeId(nodeId)[0];
 	ip := selectNode.Ip;
 	managerPort := selectNode.ManagerPort;
-	token := selectNode.Token;
+	token := url.QueryEscape(selectNode.Token);
 	nodeUrl := "http://" + ip + ":" + strconv.Itoa(managerPort) + DELETE_CONSUMER_PATH + "?api-token=" + token;
 
 	nodeUrl += "&Name=" + message + "&ID=" + consumerId;
@@ -351,7 +352,7 @@ func RestartService(nodeId int) (bool, error) {
 	selectNode := GetNodeByNodeId(nodeId)[0];
 	ip := selectNode.Ip;
 	managerPort := selectNode.ManagerPort;
-	token := selectNode.Token;
+	token := url.QueryEscape(selectNode.Token);
 	nodeUrl := "http://" + ip + ":" + strconv.Itoa(managerPort) + RESTART_SERVICE_PATH + "?api-token=" + token;
 
 	fmt.Println(nodeUrl);
@@ -378,7 +379,7 @@ func ReloadService(nodeId int) (bool, error) {
 	selectNode := GetNodeByNodeId(nodeId)[0];
 	ip := selectNode.Ip;
 	managerPort := selectNode.ManagerPort;
-	token := selectNode.Token;
+	token := url.QueryEscape(selectNode.Token);
 	nodeUrl := "http://" + ip + ":" + strconv.Itoa(managerPort) + RELOAD_SERVICE_PATH + "?api-token=" + token;
 
 	fmt.Println(nodeUrl);
@@ -405,7 +406,7 @@ func ConsumerStatus(nodeId int) ([]map[string]interface{}, error){
 	selectNode := GetNodeByNodeId(nodeId)[0];
 	ip := selectNode.Ip;
 	managerPort := selectNode.ManagerPort;
-	token := selectNode.Token;
+	token := url.QueryEscape(selectNode.Token);
 	nodeUrl := "http://" + ip + ":" + strconv.Itoa(managerPort) + MESSAGE_STATUS_PATH + "?api-token=" + token;
 
 	type StatusResponse struct {
@@ -482,7 +483,7 @@ func LogSearch(nodeId int, keyword string, logType string) (string, error) {
 	selectNode := GetNodeByNodeId(nodeId)[0];
 	ip := selectNode.Ip;
 	managerPort := selectNode.ManagerPort;
-	token := selectNode.Token;
+	token := url.QueryEscape(selectNode.Token);
 	nodeUrl := "http://" + ip + ":" + strconv.Itoa(managerPort) + LOG_SEARCH_PATH + "?api-token=" + token;
 	nodeUrl += "&keyword=" + keyword + "&type=" + logType
 

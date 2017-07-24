@@ -5,6 +5,10 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/astaxie/beego/orm"
+	"io/ioutil"
+	"os"
+	"database/sql"
+	"fmt"
 )
 
 //初始化
@@ -19,7 +23,8 @@ func Init() {
 
 	orm.RegisterModel(new(User), new(Node), new(Notice));
 
-	if beego.AppConfig.String("runmode") == "development" {
+	debug, _:= beego.AppConfig.Bool("database.debug");
+	if (debug == true) {
 		orm.Debug = true
 	}
 }
@@ -48,9 +53,34 @@ func mysqlConn()  {
 
 //sqlite 连接
 func sqliteConn()  {
-	sqlite := beego.AppConfig.String("database.sqlite.path");
-	orm.RegisterDriver("sqlite", orm.DRSqlite)
-	orm.RegisterDataBase("default", "sqlite3", sqlite)
+
+	sqlitePath := beego.AppConfig.String("database.sqlite.path");
+	_, err := os.Stat(sqlitePath)
+	if(os.IsNotExist(err)) {
+		createSqlLite(sqlitePath)
+	}
+
+	orm.RegisterDriver("sqlite", orm.DRSqlite);
+	orm.RegisterDataBase("default", "sqlite3", sqlitePath);
+}
+
+//创建sqllite
+func createSqlLite(sqlitePath string)  {
+
+	sqliteSqlPath := beego.AppConfig.String("database.sqlite.sql.path");
+	db, _ := sql.Open("sqlite3", sqlitePath)
+
+	sqlBytes, _ := ioutil.ReadFile(sqliteSqlPath);
+
+	//创建表
+	sqlTable := string(sqlBytes);
+	res, err := db.Exec(sqlTable);
+	fmt.Println(res);
+	if(err != nil) {
+		fmt.Println(err.Error());
+	}
+
+	db.Close();
 }
 
 func TableName(name string) string {

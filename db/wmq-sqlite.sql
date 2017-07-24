@@ -19,7 +19,7 @@ CREATE TABLE `wmq_user` (
   `update_time` integer unsigned NOT NULL DEFAULT '0'
 );
 INSERT INTO `wmq_user` (`name`, `email`, `password`,  `mobile`, `is_delete`, `create_time`, `update_time`)
-VALUES ('root', 'root@123456.com', 'e10adc3949ba59abbe56e057f20f883e', '1102222', '0', '1460557068', '1461407549');
+VALUES ('root', 'root@123456.com', 'e10adc3949ba59abbe56e057f20f883e', '1102222', '0', '1500825600', '1500825600');
 
 -- -------------------------------------------
 -- wmq node table 节点表
@@ -48,3 +48,5 @@ CREATE TABLE `wmq_notice` (
   `create_time` integer unsigned NOT NULL DEFAULT '0'
 );
 
+INSERT INTO `wmq_notice` (`user_name`, `message`, `create_time`)
+VALUES ('root', '欢迎使用Wmq-Admin V1.0', '1500825600');
