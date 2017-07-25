@@ -57,7 +57,6 @@
                         <tr>
                             <td class="center">{{dateFormat $log.Timestamp "Y-m-d H:i:s"}}</td>
                             <td class="center">{{$log.LevelString}}</td>
-                            <td class="center">{{$log.FieldsString}}</td>
                             <td>
                                 <a data-toggle="collapse" data-target="#{{$log.TimestampMilliseconds}}">{{$log.Content}}</a>
                                 <div id="#{{$log.TimestampMilliseconds}}" class="collapse"><strong>{{$log.FieldsString}}</strong></div>
