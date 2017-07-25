@@ -48,7 +48,6 @@
                         <tr>
                             <th class="w13p">Time</th>
                             <th class="w8p">Level</th>
-                            <th class="w10p">Fields</th>
                             <th>Content</th>
                             <th class="w10p">Milliseconds</th>
                         </tr>
@@ -59,8 +58,10 @@
                             <td class="center">{{dateFormat $log.Timestamp "Y-m-d H:i:s"}}</td>
                             <td class="center">{{$log.LevelString}}</td>
                             <td class="center">{{$log.FieldsString}}</td>
-                            <td>{{$log.Content}}</td>
-
+                            <td>
+                                <a data-toggle="collapse" data-target="#{{$log.TimestampMilliseconds}}">{{$log.Content}}</a>
+                                <div id="#{{$log.TimestampMilliseconds}}" class="collapse"><strong>{{$log.FieldsString}}</strong></div>
+                            </td>
                             <td class="center">{{$log.Milliseconds}}</td>
                         </tr>
                         {{end}}
