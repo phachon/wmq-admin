@@ -7,6 +7,7 @@ import (
 	"wmq-admin/app/common"
 	"strconv"
 	"net/url"
+	"strings"
 )
 
 const (
@@ -47,6 +48,17 @@ type Consumer struct {
 	Code      float64
 	CheckCode bool
 	Comment   string
+}
+
+type WmqLog struct {
+	Content               string
+	Timestamp             int64
+	Milliseconds          int64
+	TimestampMilliseconds int64
+	Level                 uint8
+	LevelString           string
+	Fields                map[string]string
+	FieldsString          string
 }
 
 type Status struct {
@@ -474,10 +486,10 @@ func PublishMessage(nodeId int, messageName string, data string, routeKey string
 }
 
 //搜索日志
-func LogSearch(nodeId int, keyword string, logType string) (string, error) {
+func LogSearch(nodeId int, keyword string, logType string) (error, []WmqLog) {
 
 	if(nodeId == 0) {
-		return "", fmt.Errorf("%s", "node_id error!");
+		return fmt.Errorf("%s", "node_id error!"), nil;
 	}
 
 	selectNode := GetNodeByNodeId(nodeId)[0];
@@ -495,10 +507,18 @@ func LogSearch(nodeId int, keyword string, logType string) (string, error) {
 	code := res.Code;
 
 	if (code != 1) {
-		return "", fmt.Errorf("%s", "调用接口失败:" + res.Data);
+		return fmt.Errorf("%s", "调用接口失败:" + res.Data), nil;
 	}
 
-	fmt.Println(res.Data);
+	var wmqLog WmqLog
+	var logResults []WmqLog
 
-	return res.Data, nil;
+	data := strings.Split(res.Data, "\n")
+	for _,log := range data {
+		json.Unmarshal([]byte(log), &wmqLog)
+		logResults = append(logResults, wmqLog)
+	}
+	fmt.Println(logResults);
+
+	return nil, logResults;
 }

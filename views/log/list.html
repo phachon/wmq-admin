@@ -46,31 +46,24 @@
                     <table class="table table-bordered">
                         <thead>
                         <tr>
-                            <th class="w13p">时间</th>
-                            <th class="w10p">消息</th>
-                            <th>消费者</th>
-                            <th class="w8p">消费结果</th>
+                            <th class="w13p">Time</th>
+                            <th class="w8p">Level</th>
+                            <th class="w10p">Fields</th>
+                            <th>Content</th>
+                            <th class="w10p">Milliseconds</th>
                         </tr>
                         </thead>
                         <tbody>
+                        {{range $log := .logs}}
                         <tr>
-                            <td class="center">2017-03-17 08:00:45</td>
-                            <td class="center">video</td>
-                            <td>http://test.com/video/callback</td>
-                            <td class="center"><span class="label label-success">成功</span></td>
+                            <td class="center">{{dateFormat $log.Timestamp "Y-m-d H:i:s"}}</td>
+                            <td class="center">{{$log.LevelString}}</td>
+                            <td class="center">{{$log.FieldsString}}</td>
+                            <td>{{$log.Content}}</td>
+
+                            <td class="center">{{$log.Milliseconds}}</td>
                         </tr>
-                        <tr>
-                            <td class="center">2017-03-17 08:00:45</td>
-                            <td class="center">new</td>
-                            <td>http://test.com/new/callback</td>
-                            <td class="center"><span class="label label-success">成功</span></td>
-                        </tr>
-                        <tr>
-                            <td class="center">2017-03-17 08:00:45</td>
-                            <td class="center">stream</td>
-                            <td>http://test.com/video/callback</td>
-                            <td class="center"><span class="label label-danger">失败</span></td>
-                        </tr>
+                        {{end}}
                         </tbody>
                     </table>
                 </div>

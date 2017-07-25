@@ -15,11 +15,13 @@ func (this *LogController) List()  {
 
 	nodes := models.GetNodes();
 
-	models.LogSearch(nodeId, keyword, logType)
+	_, logs := models.LogSearch(nodeId, keyword, logType)
 
 	this.Data["nodes"] = nodes;
 	this.Data["node_id"] = nodeId;
 	this.Data["log_type"] = logType;
 	this.Data["keyword"] = keyword;
+	this.Data["logs"] = logs;
+
 	this.display("log/list");
 }
