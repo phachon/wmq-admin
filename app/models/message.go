@@ -28,6 +28,7 @@ const (
 
 	LOG_SEARCH_PATH string = "/log";
 	LOG_FILE_LIST_PATH string = "/log/list";
+	LOG_FILE_DOWNLOAD string = "/log/file";
 )
 
 type Message struct {
@@ -518,7 +519,46 @@ func LogSearch(nodeId int, keyword string, logType string) (error, []WmqLog) {
 		json.Unmarshal([]byte(log), &wmqLog)
 		logResults = append(logResults, wmqLog)
 	}
-	fmt.Println(logResults);
 
 	return nil, logResults;
+}
+
+//搜索日志
+func LogDownload(nodeId int) (error, map[string]string) {
+
+	if(nodeId == 0) {
+		return fmt.Errorf("%s", "node_id error!"), nil;
+	}
+
+	selectNode := GetNodeByNodeId(nodeId)[0];
+	ip := selectNode.Ip;
+	managerPort := selectNode.ManagerPort;
+	token := url.QueryEscape(selectNode.Token);
+	nodeUrl := "http://" + ip + ":" + strconv.Itoa(managerPort) + LOG_FILE_LIST_PATH + "?api-token=" + token;
+
+	fmt.Println(nodeUrl);
+
+	type LogFIle struct {
+		Code int
+		Data []string
+	}
+
+	var res LogFIle;
+	response, _ := httplib.Get(nodeUrl).String();
+	json.Unmarshal([]byte(response), &res);
+	code := res.Code;
+
+	if(code != 1) {
+		return fmt.Errorf("%s", "调用接口失败:"), nil;
+	}
+
+	downloadInfo := make(map[string]string)
+
+	downloadUrl := "http://" + ip + ":" + strconv.Itoa(managerPort) + LOG_FILE_DOWNLOAD + "?api-token=" + token;
+
+	for _, logName := range res.Data {
+		downloadInfo[logName] = downloadUrl + "&" + url.QueryEscape(logName);
+	}
+
+	return nil, downloadInfo;
 }

@@ -38,6 +38,11 @@
                                 </span>
                             </div>
                         </div>
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <label class="col-sm-4 control-label"><span class="glyphicon glyphicon-download-alt"></span>下载：</label>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -56,23 +61,26 @@
                         {{range $log := .logs}}
                         <tr>
                             <td class="center">{{dateFormat $log.Timestamp "Y-m-d H:i:s"}}</td>
-                            <td class="center">{{$log.LevelString}}</td>
-                            <td>
-                                <a data-toggle="collapse" data-target="#{{$log.TimestampMilliseconds}}">{{$log.Content}}</a>
-                                <div id="#{{$log.TimestampMilliseconds}}" class="collapse"><strong>{{$log.FieldsString}}</strong></div>
+                            <td class="center">
+                                {{if eq $log.LevelString "INFO"}}
+                                <span class="label label-info">{{$log.LevelString}}</span>
+                                {{else if eq $log.LevelString "ERROR"}}
+                                <span class="label label-danger">{{$log.LevelString}}</span>
+                                {{else if eq $log.LevelString "DEBUG"}}
+                                <span class="label label-primary">{{$log.LevelString}}</span>
+                                {{end}}
                             </td>
-                            <td class="center">{{$log.Milliseconds}}</td>
+                            <td>
+                                <a data-toggle="collapse" data-target="#{{$log.Timestamp}}_{{$log.Milliseconds}}">{{$log.Content}}</a>
+                                <div id="{{$log.Timestamp}}_{{$log.Milliseconds}}" class="collapse"><strong>{{$log.FieldsString}}</strong></div>
+                            </td>
+                            <td class="center"><label class="text-danger">{{$log.Milliseconds}}</label></td>
                         </tr>
                         {{end}}
                         </tbody>
                     </table>
                 </div>
-                <div class="panel-footer">
-                    <div class="row">
-                        <div class="col-md-8 m-pagination" id="paginator">
-                        </div>
-                    </div>
-                </div>
+                <div class="panel-footer"></div>
             </div>
         </div>
     </div>
