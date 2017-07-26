@@ -56,3 +56,12 @@ func (this *TemplateController) Login()  {
 
 	this.jsonSuccess("登录成功", "/index/main");
 }
+
+//logout
+func (this *TemplateController) Logout(){
+	passport := beego.AppConfig.String("author.passport")
+	this.Ctx.SetCookie(passport, "")
+	this.SetSession("author", "")
+
+	this.redirect("/");
+}
