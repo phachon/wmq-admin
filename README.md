@@ -8,7 +8,7 @@
 ![image](https://github.com/phachon/wmq-admin/blob/master/static/images/wiki/consumer.png)
 
 ## WMQ
-基于 RabbitMQ 开发的消息队列服务，支持 http 协议
+基于 RabbitMQ 开发的消息队列服务，支持 http 协议  
 fork: https://github.com/snail007/wmq
 
 ## 环境依赖
@@ -17,29 +17,29 @@ fork: https://github.com/snail007/wmq
 - sqllite
 
 ## 功能
-- 公告管理
+- 公告管理  
 及时发布系统公告，通知升级
-- 用户管理
+- 用户管理  
 添加用户
-- 节点管理
+- 节点管理  
 多台机器多节点部署
-- 消息管理
+- 消息管理  
 对消息的增、删、改、查、重载、测试功能
-- 消费管理
+- 消费管理  
 对消费者的增、删、改、查、重载功能
-- 日志管理
+- 日志管理  
 日志检索和日志下载
 
 # 编译与部署
 
-根据环境变量部署
-设置 go 环境变量
-GOENV = development
-GOENV = production
-GOENV = testing
+根据环境变量部署  
+设置 go 环境变量  
+GOENV = development  
+GOENV = production  
+GOENV = testing  
 
-编译：go build
-运行 nohup ./wmq-admin &
+编译：go build  
+运行 nohup ./wmq-admin &  
 
 ## 反馈
 
