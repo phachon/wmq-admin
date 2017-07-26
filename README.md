@@ -3,9 +3,9 @@
 实现了对 WMQ 服务的用户，节点，消息，消费，日志的统一操作管理
 
 - 消息管理
-![image](https://raw.githubusercontent.com/phachon/wmq-admin/master/static/images/wiki/message.jpg)
+![image](https://github.com/phachon/wmq-admin/blob/master/static/images/wiki/message.png)
 - 消费管理
-![image](https://raw.githubusercontent.com/phachon/wmq-admin/master/static/images/wiki/consumer.jpg)
+![image](https://github.com/phachon/wmq-admin/blob/master/static/images/wiki/consumer.png)
 
 ## WMQ
 基于 RabbitMQ 开发的消息队列服务，支持 http 协议
