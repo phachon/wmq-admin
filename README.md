@@ -41,6 +41,8 @@ GOENV = testing
 编译：go build  
 运行 nohup ./wmq-admin &  
 
+登录初始账号密码：root 123456
+
 ## 反馈
 
 欢迎提交意见和代码，联系方式 phachon@163.com
