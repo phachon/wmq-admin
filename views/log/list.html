@@ -4,7 +4,6 @@
             <div class="panel-body" style="padding: 15px 0;">
                 <ul class="nav nav-tabs">
                     <li class="active"><a href="javascript:;">Wmq日志</a></li>
-                    <!--<li><a href="log_debug.html">系统日志</a></li>-->
                 </ul>
             </div>
             <div class="panel-body" style="padding-left: 9px;">
@@ -38,9 +37,9 @@
                                 </span>
                             </div>
                         </div>
-                        <div class="col-md-3">
-                            <div class="input-group">
-                                <label class="col-sm-4 control-label"><span class="glyphicon glyphicon-download-alt"></span>下载：</label>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <button type="button" class="btn btn-primary" name="log_download" data-link="/log/download?node_id={{.node_id}}"><i class="glyphicon glyphicon-download-alt"></i> 下载日志 </button>
                             </div>
                         </div>
                     </form>
@@ -85,3 +84,7 @@
         </div>
     </div>
 </div>
+<script src="/static/js/modules/log.js"></script>
+<script type="text/javascript">
+    Log.bindFancyBox();
+</script>

@@ -557,7 +557,7 @@ func LogDownload(nodeId int) (error, map[string]string) {
 	downloadUrl := "http://" + ip + ":" + strconv.Itoa(managerPort) + LOG_FILE_DOWNLOAD + "?api-token=" + token;
 
 	for _, logName := range res.Data {
-		downloadInfo[logName] = downloadUrl + "&" + url.QueryEscape(logName);
+		downloadInfo[logName] = downloadUrl + "&file=" + url.QueryEscape(logName);
 	}
 
 	return nil, downloadInfo;
