@@ -32,6 +32,8 @@ func main() {
 		beego.BeeLogger.DelLogger("console")
 	}
 
+	beego.BConfig.RouterCaseSensitive = false
+
 	//开启 session
 	beego.BConfig.WebConfig.Session.SessionOn = true
 	//session 过期时间
