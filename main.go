@@ -24,6 +24,8 @@ func main() {
 		beego.LoadAppConfig("ini", "conf/production.conf")
 	}
 
+	beego.BConfig.WebConfig.ViewsPath = "app/views/"
+
 	if beego.AppConfig.String("runmode") == "development" {
 		beego.SetLevel(beego.LevelDebug)
 	} else {
