@@ -30,7 +30,8 @@ fork: https://github.com/snail007/wmq
 - 日志管理  
 日志检索和日志下载
 
-# 部署
+# 部署安装
+## 安装
 下载最新版本的源代码
 根据环境变量部署
 设置 go 环境变量
@@ -38,17 +39,21 @@ GOENV = development
 GOENV = production
 GOENV = testing
 
-- 1. 手动编译
+## 编译
+
+- 手动编译
 搭建安装Go环境，进入项目根目录
 执行：go get ./...
 编译：go build ./
-- 2. 免编译
+
+- 免编译
 下载已经编译好的二进制程序，地址 https://github.com/phachon/wmq-admin-release
 将下载好的文件重命名为 wmq-admin, 并放置在项目根目录
 
+## 运行
 运行 nohup ./wmq-admin &
-
 登录初始账号密码：root 123456
+
 
 ## 反馈
 
