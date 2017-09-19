@@ -233,9 +233,9 @@ func AddConsumer(nodeId int, message string, consumer *Consumer) (bool, error) {
 	if(consumer.Timeout == 0) {
 		return false, fmt.Errorf("%s", "超时时间不能为空!");
 	}
-	if(consumer.RouteKey == "") {
-		return false, fmt.Errorf("%s", "RouteKey 不能为空!");
-	}
+	//if(consumer.RouteKey == "") {
+	//	return false, fmt.Errorf("%s", "RouteKey 不能为空!");
+	//}
 	if(consumer.CheckCode) {
 		if(consumer.Code == 0) {
 			return false, fmt.Errorf("%s", "检查code码不能为空!");
@@ -283,9 +283,9 @@ func UpdateConsumer(nodeId int, message string, consumer *Consumer) (bool, error
 	if(consumer.Timeout == 0) {
 		return false, fmt.Errorf("%s", "超时时间不能为空!");
 	}
-	if(consumer.RouteKey == "") {
-		return false, fmt.Errorf("%s", "RouteKey 不能为空!");
-	}
+	//if(consumer.RouteKey == "") {
+	//	return false, fmt.Errorf("%s", "RouteKey 不能为空!");
+	//}
 	if(consumer.CheckCode) {
 		if(consumer.Code == 0) {
 			return false, fmt.Errorf("%s", "检查code码不能为空!");

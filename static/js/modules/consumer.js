@@ -52,7 +52,7 @@ var Consumer = {
                     var values = response.data;
                     for(var i = 0; i < values.length; i++) {
                         var element = $('#consumer_'+values[i].ID).find(".consumer_status");
-                        if(values[i].LastTime < nowTime - 5) {
+                        if(values[i].LastTime != 0) {
                             element.html('<label class="text-success">running('+values[i].Count+')</label>');
                         }else {
                             element.html('<label class="text-danger">stoped('+values[i].Count+')</label>');
