@@ -40,7 +40,7 @@ GOENV = testing
 
 执行：go get ./...
 编译：go build ./
-运行 nohup ./wmq-admin &  
+运行 nohup ./wmq-admin &
 
 登录初始账号密码：root 123456
 

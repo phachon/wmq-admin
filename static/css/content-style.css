@@ -51,6 +51,8 @@ th {
 
 .table{
     table-layout:fixed;
+    word-break:break-all;
+    word-wrap:break-word;
 }
 
 .w5p{width:5%;}
