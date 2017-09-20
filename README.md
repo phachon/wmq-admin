@@ -33,20 +33,18 @@ fork: https://github.com/snail007/wmq
 
 # 部署安装
 ## 安装
-下载最新版本的源代码  
+下载已经编译好的二进制程序，地址 https://github.com/phachon/wmq-admin/releases  
 根据环境变量部署  
-设置 go 环境变量  
+设置PATH环境变量  
 GOENV = development  
 GOENV = production  
 GOENV = testing  
- 
-下载已经编译好的二进制程序，地址 https://github.com/phachon/wmq-admin/releases  
 
-解压目录执行 ./wmq-admin
+解压目录执行 ./wmq-admin  
 
 ## 运行
-运行 nohup ./wmq-admin &  
-浏览器访问 http://127.0.0.1:8080
+运行 nohup ./wmq-admin &  
+浏览器访问 http://127.0.0.1:8080  
 登录初始账号密码：root 123456  
 
 
