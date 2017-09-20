@@ -77,7 +77,11 @@ type Response struct {
 //根据 node_id 获取 所有的消息
 func GetMessagesByNodeId(nodeId int) ([]Message) {
 
-	selectNode := GetNodeByNodeId(nodeId)[0];
+	selectNodes := GetNodeByNodeId(nodeId);
+	if(len(selectNodes) == 0) {
+		return []Message{}
+	}
+	selectNode := selectNodes[0]
 	ip := selectNode.Ip;
 	managerPort := selectNode.ManagerPort;
 	token := url.QueryEscape(selectNode.Token);
@@ -493,7 +497,11 @@ func LogSearch(nodeId int, keyword string, logType string) (error, []WmqLog) {
 		return fmt.Errorf("%s", "node_id error!"), nil;
 	}
 
-	selectNode := GetNodeByNodeId(nodeId)[0];
+	selectNodes := GetNodeByNodeId(nodeId);
+	if(len(selectNodes) == 0) {
+		return nil, []WmqLog{}
+	}
+	selectNode := selectNodes[0]
 	ip := selectNode.Ip;
 	managerPort := selectNode.ManagerPort;
 	token := url.QueryEscape(selectNode.Token);
@@ -530,7 +538,11 @@ func LogDownload(nodeId int) (error, map[string]string) {
 		return fmt.Errorf("%s", "node_id error!"), nil;
 	}
 
-	selectNode := GetNodeByNodeId(nodeId)[0];
+	selectNodes := GetNodeByNodeId(nodeId);
+	if(len(selectNodes) == 0) {
+		return nil, nil
+	}
+	selectNode := selectNodes[0]
 	ip := selectNode.Ip;
 	managerPort := selectNode.ManagerPort;
 	token := url.QueryEscape(selectNode.Token);
