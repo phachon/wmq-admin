@@ -2,6 +2,7 @@
 根据 WMQ 服务提供的后台管理系统
 实现了对 WMQ 服务的用户，节点，消息，消费，日志的统一操作管理
 
+# 预览
 - 消息管理
 ![image](https://github.com/phachon/wmq-admin/blob/master/static/images/wiki/message.png)
 - 消费管理
@@ -38,21 +39,15 @@ fork: https://github.com/snail007/wmq
 GOENV = development  
 GOENV = production  
 GOENV = testing  
+ 
+下载已经编译好的二进制程序，地址 https://github.com/phachon/wmq-admin/releases  
 
-## 编译
-
-- 手动编译  
-搭建安装Go环境，进入项目根目录  
-执行：go get ./...  
-编译：go build ./  
-
-- 免编译  
-下载已经编译好的二进制程序，地址 https://github.com/phachon/wmq-admin-release  
-将下载好的文件重命名为 wmq-admin, 并放置在项目根目录  
+解压目录执行 ./wmq-admin
 
 ## 运行
-运行 nohup ./wmq-admin &  
-登录初始账号密码：root 123456  
+运行 nohup ./wmq-admin &  
+浏览器访问 http://127.0.0.1:8080
+登录初始账号密码：root 123456  
 
 
 ## 反馈
