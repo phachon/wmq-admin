@@ -4,3 +4,4 @@ log/*
 *.exe
 *.exe~
 *.db
+wmq-admin
