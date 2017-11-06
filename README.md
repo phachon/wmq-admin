@@ -1,8 +1,6 @@
 # Wmq-Admin
 [![stable](https://img.shields.io/badge/stable-stable-green.svg)](https://github.com/phachon/wmq-admin/) 
-[![license](https://img.shields.io/github/license/phachon/wmq-admin.svg?style=plastic)]() 
-[![download_count](https://img.shields.io/github/downloads/phachon/wmq-admin/total.svg?style=plastic)](https://github.com/phachon/wmq-admin/releases) 
-[![download](https://img.shields.io/github/release/phachon/wmq-admin.svg?style=plastic)](https://github.com/phachon/wmq-admin/releases)
+[![license](https://img.shields.io/github/license/phachon/wmq-admin.svg?style=plastic)]()
 ----
 根据 WMQ 服务提供的后台管理系统
 实现了对 WMQ 服务的用户，节点，消息，消费，日志的统一操作管理
