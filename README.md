@@ -1,4 +1,4 @@
-> ### 最近已将 wmq 和 wmq-admin 进行全部重构，由于重构后再代码架构，实现等相差较大。故新建项目 [WMQX](https://github.com/phachon/wmqx) 对应的操作后台为 [WMQX-UI](https://github.com/phachon/wmqx-ui)。重构后的 [WMQX](https://github.com/phachon/wmqx) 代码分层清晰，api 更简洁标准，易于维护和扩展。当然，您还可以继续使用 wmq 和 wmq-admin
+> ### 最近已将 wmq 和 wmq-admin 进行全部重构，由于重构后代码架构，实现方式等相差较大。故新建项目 [WMQX](https://github.com/phachon/wmqx) 对应的操作后台为 [WMQX-UI](https://github.com/phachon/wmqx-ui)。重构后的 [WMQX](https://github.com/phachon/wmqx) 代码分层清晰，api 更简洁标准，易于维护和扩展。当然，您还可以继续使用 wmq 和 wmq-admin
 
 # Wmq-Admin
 [![stable](https://img.shields.io/badge/stable-stable-green.svg)](https://github.com/phachon/wmq-admin/) 
