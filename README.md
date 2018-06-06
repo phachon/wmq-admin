@@ -1,6 +1,9 @@
 > ### 最近已将 wmq 和 wmq-admin 进行全部重构，由于重构后再代码架构，实现等相差较大。故新建项目 [WMQX](https://github.com/phachon/wmqx) 对应的操作后台为 [WMQX-UI](https://github.com/phachon/wmqx-ui)。重构后的 [WMQX](https://github.com/phachon/wmqx) 代码分层清晰，api 更简洁标准，易于维护和扩展。当然，您还可以继续使用 wmq 和 wmq-admin
 
 # Wmq-Admin
+[![stable](https://img.shields.io/badge/stable-stable-green.svg)](https://github.com/phachon/wmq-admin/) 
+[![license](https://img.shields.io/github/license/phachon/wmq-admin.svg?style=plastic)]()
+----
 根据 WMQ 服务提供的后台管理系统
 实现了对 WMQ 服务的用户，节点，消息，消费，日志的统一操作管理
 
@@ -29,27 +32,19 @@ fork: https://github.com/snail007/wmq
 
 # 部署安装
 ## 安装
-下载最新版本的源代码  
+下载已经编译好的二进制程序，地址 https://github.com/phachon/wmq-admin/releases  
 根据环境变量部署  
-设置 go 环境变量  
+设置PATH环境变量  
 GOENV = development  
 GOENV = production  
 GOENV = testing  
 
-## 编译
-
-- 手动编译  
-搭建安装Go环境，进入项目根目录  
-执行：go get ./...  
-编译：go build ./  
-
-- 免编译  
-下载已经编译好的二进制程序，地址 https://github.com/phachon/wmq-admin-release  
-将下载好的文件重命名为 wmq-admin, 并放置在项目根目录  
+解压目录执行 ./wmq-admin  
 
 ## 运行
 运行 nohup ./wmq-admin &  
-登录初始账号密码：root 123456  
+浏览器访问 http://127.0.0.1:8080  
+登录初始账号密码：root 123456  
 
 
 ## 反馈
