@@ -1,11 +1,8 @@
+> ### 最近已将 wmq 和 wmq-admin 进行全部重构，由于重构后再代码架构，实现等相差较大。故新建项目 [WMQX](https://github.com/phachon/wmqx) 对应的操作后台为 [WMQX-UI](https://github.com/phachon/wmqx-ui)。重构后的 [WMQX](https://github.com/phachon/wmqx) 代码分层清晰，api 更简洁标准，易于维护和扩展。当然，您还可以继续使用 wmq 和 wmq-admin
+
 # Wmq-Admin
 根据 WMQ 服务提供的后台管理系统
 实现了对 WMQ 服务的用户，节点，消息，消费，日志的统一操作管理
-
-- 消息管理
-![image](https://github.com/phachon/wmq-admin/blob/master/static/images/wiki/message.png)
-- 消费管理
-![image](https://github.com/phachon/wmq-admin/blob/master/static/images/wiki/consumer.png)
 
 ## WMQ
 基于 RabbitMQ 开发的消息队列服务，支持 http 协议  
